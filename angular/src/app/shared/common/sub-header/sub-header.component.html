@@ -1,0 +1,72 @@
+<div [class]="currentTheme.baseSettings.subHeader.containerStyle + ' toolbar'">
+    <div [class]="containerClass + ' d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap'">
+        <div class="d-flex align-items-center flex-wrap me-2">
+            <h1
+                *ngIf="currentTheme.baseSettings.subHeader.subheaderSize == 1"
+                [class]="currentTheme.baseSettings.subHeader.titleStyle"
+            >
+                {{ title }}
+            </h1>
+            <h2
+                *ngIf="currentTheme.baseSettings.subHeader.subheaderSize == 2"
+                [class]="currentTheme.baseSettings.subHeader.titleStyle"
+            >
+                {{ title }}
+            </h2>
+            <h3
+                *ngIf="currentTheme.baseSettings.subHeader.subheaderSize == 3"
+                [class]="currentTheme.baseSettings.subHeader.titleStyle"
+            >
+                {{ title }}
+            </h3>
+            <h4
+                *ngIf="currentTheme.baseSettings.subHeader.subheaderSize == 4"
+                [class]="currentTheme.baseSettings.subHeader.titleStyle"
+            >
+                {{ title }}
+            </h4>
+            <h5
+                *ngIf="currentTheme.baseSettings.subHeader.subheaderSize == 5"
+                [class]="currentTheme.baseSettings.subHeader.titleStyle"
+            >
+                {{ title }}
+            </h5>
+            <h6
+                *ngIf="currentTheme.baseSettings.subHeader.subheaderSize == 6"
+                [class]="currentTheme.baseSettings.subHeader.titleStyle"
+            >
+                {{ title }}
+            </h6>
+            <div
+                *ngIf="description"
+                class="subheader-separator subheader-separator-ver mt-2 mb-2 me-4 bg-gray-200"
+            ></div>
+            <div *ngIf="description" class="d-flex align-items-center">
+                <span class="text-muted fw-bold me-4">{{ description }}</span>
+            </div>
+            <div
+                *ngIf="breadcrumbs && breadcrumbs.length > 0"
+                class="subheader-separator subheader-separator-ver mt-2 mb-2 me-4 bg-gray-200"
+            ></div>
+            <ul
+                *ngIf="breadcrumbs && breadcrumbs.length > 0"
+                class="breadcrumb breadcrumb-transparent breadcrumb-dot fw-bold p-0 my-2 fs-sm"
+            >
+                <li class="breadcrumb-item" *ngFor="let breadcrumbItem of breadcrumbs">
+                    <a
+                        *ngIf="breadcrumbItem.isLink()"
+                        style="cursor: pointer"
+                        (click)="goToBreadcrumb(breadcrumbItem)"
+                        class="text-muted"
+                    >
+                        {{ breadcrumbItem.text }}
+                    </a>
+                    <span *ngIf="!breadcrumbItem.isLink()" class="text-muted">{{ breadcrumbItem.text }}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="d-flex align-items-center">
+            <ng-content select="div[role=actions]"></ng-content>
+        </div>
+    </div>
+</div>

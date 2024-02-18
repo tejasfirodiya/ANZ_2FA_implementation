@@ -1,0 +1,171 @@
+<div [@routerTransition]>
+    <div [class]="containerClass">
+        <div class="card shadow-lg">
+            <div class="card-body">
+                <div class="row justify-content-center mt-10 mb-0 pricing-items">
+                    <div
+                        *ngIf="!editionsSelectOutput || !editionsSelectOutput.editionsWithFeatures"
+                        class="alert alert-custom alert-warning fade show"
+                        role="alert"
+                    >
+                        <div class="alert-icon">
+                            <i class="flaticon-warning"></i>
+                        </div>
+                        <div class="alert-text">{{ 'ThereIsNoEditionToUpgrade' | localize }}</div>
+                    </div>
+
+                    <div
+                        class="col-xl-4 mb-10"
+                        *ngFor="let editionWithFeatures of editionsSelectOutput.editionsWithFeatures; let i = index"
+                    >
+                        <div class="d-flex h-100 align-items-center">
+                            <div class="w-100 d-flex flex-column flex-center rounded-3 bg-light bg-opacity-75 py-15">
+                                <div
+                                    class="pt-30 pt-md-25 mb-15"
+                                    style="min-width: 200px"
+                                    [class.border-left-md]="i > 0"
+                                    [class.px-10]="i === 0"
+                                    [class.px-15]="i > 0"
+                                >
+                                    <!--begin::Icon-->
+                                    <div class="d-flex flex-center position-relative mt-10">
+                                        <span class="pricing-item-icon text-primary">
+                                            <i class="fa {{ editionIcons[i] }} text-primary"></i>
+                                        </span>
+                                    </div>
+                                    <!--end::Icon-->
+                                    <span class="fs-h1 d-block d-block fw-boldest py-2 pricing-title">
+                                        {{ editionWithFeatures.edition.displayName }}
+                                    </span>
+                                    <h4
+                                        class="fs-h6 d-block d-block fw-bold mb-7 pricing-subtitle"
+                                        style="min-height: 100px"
+                                        *ngIf="isFree(editionWithFeatures.edition)"
+                                    >
+                                        <span>{{ 'Free' | localize }}</span>
+                                    </h4>
+                                    <h4
+                                        class="fs-h6 d-block d-block fw-bold mb-7 pricing-subtitle"
+                                        style="min-height: 100px"
+                                        *ngIf="!isFree(editionWithFeatures.edition)"
+                                    >
+                                        <span *ngIf="editionWithFeatures.edition.dailyPrice > 0">
+                                            {{ appSession.application.currencySign }}
+                                            {{ editionWithFeatures.edition.dailyPrice }} / {{ 'Daily' | localize }}
+                                            <br />
+                                        </span>
+                                        <span *ngIf="editionWithFeatures.edition.weeklyPrice > 0">
+                                            {{ appSession.application.currencySign }}
+                                            {{ editionWithFeatures.edition.weeklyPrice }}
+                                            / {{ 'Weekly' | localize }}
+                                            <br />
+                                        </span>
+                                        <span *ngIf="editionWithFeatures.edition.monthlyPrice > 0">
+                                            {{ appSession.application.currencySign }}
+                                            {{ editionWithFeatures.edition.monthlyPrice }}
+                                            / {{ 'Monthly' | localize }}
+                                            <br />
+                                        </span>
+                                        <span *ngIf="editionWithFeatures.edition.annualPrice > 0">
+                                            {{ appSession.application.currencySign }}
+                                            {{ editionWithFeatures.edition.annualPrice }}
+                                            / {{ 'Annual' | localize }}
+                                        </span>
+                                    </h4>
+
+                                    <p class="mb-4 d-flex flex-column">
+                                        <span *ngFor="let feature of editionsSelectOutput.allFeatures">
+                                            <!--Checbox Feature-->
+                                            <span
+                                                *ngIf="
+                                                    isTrueFalseFeature(feature) &&
+                                                    featureEnabledForEdition(feature, editionWithFeatures)
+                                                "
+                                                class="text-success text-left"
+                                            >
+                                                <i class="far fa-check-circle text-success"></i>
+                                                {{ feature.displayName }}
+                                            </span>
+                                            <span
+                                                *ngIf="
+                                                    isTrueFalseFeature(feature) &&
+                                                    !featureEnabledForEdition(feature, editionWithFeatures)
+                                                "
+                                                class="text-muted text-left"
+                                            >
+                                                <i class="far fa-times-circle text-muted"></i>
+                                                {{ feature.displayName }}
+                                            </span>
+                                            <!--Checbox Feature-->
+
+                                            <!--Not Checbox Feature-->
+                                            <span *ngIf="!isTrueFalseFeature(feature)" class="text-success text-left">
+                                                <i class="far fa-check-circle text-success"></i>
+                                                {{ feature.displayName }}:{{
+                                                    getFeatureValueForEdition(feature, editionWithFeatures)
+                                                }}
+                                            </span>
+                                            <!--Not Checbox Feature-->
+                                        </span>
+                                    </p>
+
+                                    <button
+                                        class="btn btn-warning w-100 btn-lg"
+                                        (click)="upgrade(editionWithFeatures.edition, editionPaymentType.Upgrade)"
+                                        *ngIf="isUserLoggedIn"
+                                    >
+                                        {{ 'Upgrade' | localize }}
+                                    </button>
+
+                                    <button
+                                        class="btn btn-success w-100 btn-lg"
+                                        [routerLink]="['/account/register-tenant']"
+                                        [queryParams]="{
+                                            editionId: editionWithFeatures.edition.id,
+                                            subscriptionStartType: subscriptionStartType.Free
+                                        }"
+                                        href="#"
+                                        *ngIf="!isUserLoggedIn && isFree(editionWithFeatures.edition)"
+                                    >
+                                        {{ 'Free' | localize }}
+                                    </button>
+
+                                    <button
+                                        class="btn btn-warning w-100 btn-lg"
+                                        [routerLink]="['/account/register-tenant']"
+                                        [queryParams]="{
+                                            editionId: editionWithFeatures.edition.id,
+                                            subscriptionStartType: subscriptionStartType.Trial
+                                        }"
+                                        href="#"
+                                        *ngIf="
+                                            !isUserLoggedIn &&
+                                            !isFree(editionWithFeatures.edition) &&
+                                            editionWithFeatures.edition.trialDayCount
+                                        "
+                                    >
+                                        {{ 'FreeTrial' | localize }}
+                                    </button>
+
+                                    <button
+                                        class="btn btn-primary w-100 btn-lg"
+                                        [routerLink]="['/account/register-tenant']"
+                                        [queryParams]="{
+                                            editionId: editionWithFeatures.edition.id,
+                                            subscriptionStartType: subscriptionStartType.Paid,
+                                            editionPaymentType: editionPaymentType.NewRegistration
+                                        }"
+                                        href="#"
+                                        *ngIf="!isUserLoggedIn && !isFree(editionWithFeatures.edition)"
+                                    >
+                                        {{ 'BuyNow' | localize }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<a href="/">
+    <img
+        *ngIf="!appSession.tenant || !appSession.tenant.HasLogo()"
+        src="/assets/common/images/app-logo-on-{{skin}}-sm.svg"
+        [class]="customStyle"
+    />
+    <img
+        *ngIf="appSession.tenant && appSession.tenant.HasLogo()"
+        [src]="
+            remoteServiceBaseUrl +
+            '/TenantCustomization/GetTenantLogo?skin=dark-sm' + 
+            '&tenantId=' +
+            appSession.tenant.id
+        "
+        alt="logo"
+        [class]="customStyle"
+    />
+</a>

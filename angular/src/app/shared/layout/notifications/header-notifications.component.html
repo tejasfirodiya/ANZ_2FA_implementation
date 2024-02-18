@@ -1,0 +1,133 @@
+<div
+    dropdown
+    class="d-flex align-items-center ms-1 ms-lg-3"
+    data-toggle="dropdown"
+    aria-expanded="true"
+    container="body"
+>
+    <div dropdownToggle [class]="customStyle" id="notificationIcon">
+        <i [class]="iconStyle" *ngIf="unreadNotificationCount"></i>
+        <span
+            class="position-absolute top-0 start-100 translate-middle badge badge-circle badge-warning"
+            *ngIf="unreadNotificationCount"
+        >
+            {{ unreadNotificationCount }}
+        </span>
+        <i class="flaticon-alarm" *ngIf="!unreadNotificationCount"></i>
+    </div>
+    <ng-container *ngIf="isRight">
+        <div
+            *dropdownMenu
+            class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-sm dropdown-menu-lg"
+        >
+            <ng-container *ngTemplateOutlet="dropdownMenuContent"></ng-container>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="!isRight">
+        <div
+            *dropdownMenu
+            class="dropdown-menu p-0 m-0 dropdown-menu-left dropdown-menu-anim-up dropdown-menu-sm dropdown-menu-lg"
+        >
+            <ng-container *ngTemplateOutlet="dropdownMenuContent"></ng-container>
+        </div>
+    </ng-container>
+</div>
+
+<ng-template #dropdownMenuContent>
+    <div
+        perfectScrollbar
+        class="d-flex flex-column pt-5 bgi-size-cover bgi-no-repeat rounded-top bg-primary"
+        style="min-height: 70px"
+    >
+        <h4 class="d-flex flex-center" style="align-items: center; justify-content: space-between">
+            <span class="ms-5">
+                <span class="text-white">{{ 'Notifications' | localize }}</span>
+                <span class="btn btn-text btn-secondary btn-sm fw-bold btn-font-md ms-2">
+                    {{ unreadNotificationCount }} {{ 'New' | localize }}
+                </span>
+            </span>
+            <a
+                id="openNotificationSettingsModalLink"
+                class="btn btn-md btn-icon btn-secondary me-5"
+                href="javascript:;"
+                (click)="openNotificationSettingsModal()"
+            >
+                <i class="flaticon2-gear"></i>
+            </a>
+        </h4>
+    </div>
+    <div class="px-4">
+        <div
+            class="scroll pt-5"
+            data-scroll="true"
+            data-height="300"
+            data-mobile-height="200"
+            style="height: 300px; overflow: hidden"
+        >
+            <div
+                *ngFor="let notification of notifications"
+                class="d-flex align-items-sm-center mb-7 user-notification-item-clickable user-notification-item-unread"
+                (click)="gotoUrl(notification.url)"
+                [ngClass]="{
+                    'user-notification-item-clickable': notification.url,
+                    'user-notification-item-unread': notification.isUnread
+                }"
+            >
+                <div class="symbol symbol-50px me-5">
+                    <span class="symbol-label">
+                        <i class="{{ notification.icon }} {{ notification.iconFontClass }} icon-lg"></i>
+                    </span>
+                </div>
+                <div class="d-flex align-items-center flex-row-fluid flex-wrap">
+                    <div class="flex-grow-1 me-2">
+                        <a
+                            class="text-hover-primary fs-6 fw-bolder"
+                            [ngClass]="{ 'text-muted': !notification.isUnread }"
+                        >
+                            {{ notification.text }}
+                        </a>
+                    </div>
+                    <span class="text-muted fw-bold d-block fs-7">
+                        {{ notification.creationTime | luxonFromNow }}
+                    </span>
+                    <span
+                        *ngIf="notification.isUnread"
+                        class="btn btn-link-success text-success set-notification-as-read fs-7 py-0 my-0 set-notification-as-read"
+                        (click)="setNotificationAsRead(notification); $event.preventDefault(); $event.stopPropagation()"
+                    >
+                        {{ 'SetAsRead' | localize }}
+                    </span>
+                </div>
+            </div>
+
+            <span *ngIf="!notifications.length" class="notification-empty-text text-center p-5">
+                {{ 'ThereAreNoNotifications' | localize }}
+            </span>
+        </div>
+        <hr *ngIf="notifications.length" />
+        <div
+            class="m-1 mb-4 d-flex"
+            style="align-items: center; justify-content: space-between"
+            *ngIf="notifications.length"
+        >
+            <a
+                href="javascript:;"
+                class="btn btn-secondary col-md-6 col-xs-12"
+                (click)="setAllNotificationsAsRead(); $event.preventDefault(); $event.stopPropagation()"
+                id="setAllNotificationsAsReadLink"
+                *ngIf="unreadNotificationCount"
+            >
+                {{ 'SetAllAsRead' | localize }}
+            </a>
+
+            <a
+                routerLink="notifications"
+                [class.col-md-6]="unreadNotificationCount"
+                [class.col-md-12]="!unreadNotificationCount"
+                class="btn btn-primary col-xs-12"
+            >
+                {{ 'SeeAllNotifications' | localize }}
+            </a>
+        </div>
+    </div>
+</ng-template>

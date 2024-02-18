@@ -1,0 +1,35 @@
+<div class="card card-custom h-100">
+    <div class="card-header align-items-center border-0">
+        <div class="card-title">
+            <h3 class="card-label text-dark">
+                Profit Share
+                <small class="text-muted">Profit Share between customers</small>
+            </h3>
+        </div>
+    </div>
+    <div class="card-body">
+        <div>
+            <div class="row">
+                <div class="col-lg-6 col-md-12" style="max-height: 300px">
+                    <ngx-charts-pie-chart
+                        [results]="profitSharePieChart.chartData"
+                        [doughnut]="true"
+                        [legend]="false"
+                        [labels]="false"
+                        [scheme]="profitSharePieChart.scheme"
+                        [animations]="false"
+                        [tooltipDisabled]="true"
+                    ></ngx-charts-pie-chart>
+                </div>
+                <div class="col-lg-6 col-md-12 d-flex justify-content-center align-items-center" *ngIf="profitSharePieChart.chartData.length">
+                    <div>
+                        <div *ngFor="let item of profitSharePieChart.chartData">
+                            <span class="pieChart-color" [ngStyle]="{backgroundColor: item.color}"></span>
+                            <span>%{{item.value}} {{item.name}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

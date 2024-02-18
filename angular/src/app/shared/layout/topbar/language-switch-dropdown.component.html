@@ -1,0 +1,16 @@
+<div class="d-flex align-items-center ms-1 ms-lg-3 dropdown-language" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start" *ngIf="languages.length > 1">
+    <div [class]="customStyle">
+        <i [class]="currentLanguage.icon"></i>
+    </div>
+</div>
+<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-200px py-4"
+     data-kt-menu="true">
+     <div class="menu-item px-3" *ngFor="let language of languages">
+        <a href="javascript:;" (click)="changeLanguage(language.name)" class="menu-link px-3">
+            <span class="d-flex symbol symbol-20px me-4">
+                <i [class]="language.icon"></i>
+            </span>
+            {{ language.displayName }}
+        </a>
+    </div>
+</div>

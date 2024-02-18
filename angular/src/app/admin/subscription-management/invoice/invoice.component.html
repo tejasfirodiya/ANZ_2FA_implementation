@@ -1,0 +1,104 @@
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="post d-flex flex-column-fluid" id="kt_post">
+        <div id="kt_content_container" class="container-xxl mt-10">
+            <div class="card">
+                <div class="card-body p-lg-20">
+                    <div class="d-flex flex-column flex-xl-row">
+                        <div class="flex-lg-row-fluid me-xl-18 mb-10 mb-xl-0">
+                            <div class="mt-n1">
+                                <div class="d-flex flex-stack pb-10">
+                                    <a href="#">
+                                        <img alt="Logo" [src]="companyLogo" class="w-150px" />
+                                    </a>
+                                    <a href="javascript:;" class="btn btn-sm btn-success" onclick="window.print();">
+                                        {{ 'Print' | localize }}
+                                    </a>
+                                </div>
+                                <div class="m-0">
+                                    <div class="fw-bolder fs-3 text-gray-800 mb-8">
+                                        {{ 'Invoice' | localize }} #{{ invoiceInfo.invoiceNo }}
+                                    </div>
+                                    <div class="row g-5 mb-11">
+                                        <div class="col-sm-6">
+                                            <div class="fw-bold fs-7 text-gray-600 mb-1">{{ 'Date' | localize }}:</div>
+                                            <div class="fw-bolder fs-6 text-gray-800">
+                                                {{ invoiceInfo.invoiceDate | luxonFormat: 'yyyy-LL-dd' }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row g-5 mb-12">
+                                        <div class="col-sm-6">
+                                            <div class="fw-bold fs-7 text-gray-600 mb-1">Issue For:</div>
+                                            <div class="fw-bolder fs-6 text-gray-800">
+                                                {{ invoiceInfo.tenantLegalName }}
+                                            </div>
+                                            <div class="fw-bold fs-7 text-gray-600">
+                                                <span *ngFor="let addressLine of invoiceInfo.tenantAddress">
+                                                    {{ addressLine }}
+                                                    <br />
+                                                </span>
+                                                {{ 'Tax/VatNo' | localize }}: {{ invoiceInfo.tenantTaxNo }}
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="fw-bold fs-7 text-gray-600 mb-1">Issued By:</div>
+                                            <div class="fw-bolder fs-6 text-gray-800">
+                                                {{ invoiceInfo.hostLegalName }}
+                                            </div>
+                                            <div class="fw-bold fs-7 text-gray-600">
+                                                <span *ngFor="let addressLine of invoiceInfo.hostAddress">
+                                                    <br />
+                                                    {{ addressLine }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="table-responsive border-bottom mb-9">
+                                            <table class="table mb-3">
+                                                <thead>
+                                                    <tr class="border-bottom fs-6 fw-bolder text-muted">
+                                                        <th class="min-w-175px pb-2">#</th>
+                                                        <th class="min-w-70px text-end pb-2">
+                                                            {{ 'Edition' | localize }}
+                                                        </th>
+                                                        <th class="min-w-80px text-end pb-2">
+                                                            {{ 'Amount' | localize }}
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="fw-bolder text-gray-700 fs-5 text-end">
+                                                        <td class="d-flex align-items-center pt-6">1</td>
+                                                        <td class="pt-6">{{ invoiceInfo.editionDisplayName }}</td>
+                                                        <td class="pt-6">
+                                                            {{ appSession.application.currencySign
+                                                            }}{{ invoiceInfo.amount | number: '1.2-2' }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="d-flex justify-content-end">
+                                            <div class="mw-300px">
+                                                <div class="d-flex flex-stack">
+                                                    <div class="fw-bold pe-10 text-gray-600 fs-7">
+                                                        {{ 'Total' | localize }}
+                                                    </div>
+                                                    <div class="text-end fw-bolder fs-6 text-gray-800">
+                                                        {{ appSession.application.currencySign
+                                                        }}{{ invoiceInfo.amount | number: '1.2-2' }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

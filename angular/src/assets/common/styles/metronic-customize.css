@@ -1,0 +1,206 @@
+subscription-notification-bar,
+active-delegated-users-combo,
+quick-theme-selection,
+language-switch-dropdown,
+header-notifications,
+chat-toggle-button,
+user-menu {
+    display: flex;
+}
+
+#notificationIcon,
+#chatIconUnRead {
+    position: relative;
+}
+
+.theme-selection-link {
+    cursor: pointer;
+}
+
+.dropdown-language .navi-link i.famfamfam-flags {
+    display: inline-block;
+}
+
+
+header-notifications .dropdown-menu {
+    max-width: 400px;
+}
+
+body.aside-minimize #kt_brand {
+    width: 70px;
+}
+
+.p-paginator {
+    justify-content: flex-end !important;
+}
+
+.dropdown-menu-lg {
+    min-width: 410px !important;
+}
+
+.swal2-popup .swal2-icon {
+    margin: 1.25em auto 1.875em !important;
+}
+
+
+/** METRONIC 8 **/
+.aside .menu-item .menu-icon i {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.aside-menu .menu .menu-sub:not([data-popper-placement]) .menu-item .menu-link {
+    padding-left: calc(0.75rem + 25px);
+}
+
+ul.dropdown-menu {
+    padding: 0.75rem 0 !important;
+}
+
+.dropdown-menu li {
+    padding: 0.1rem 0.75rem !important;
+}
+
+.dropdown-menu .dropdown-item {
+    padding: 0.5rem !important;
+    border-radius: 5px;
+}
+
+.aside-menu .menu .menu-sub:not([data-popper-placement]) .menu-item .menu-item .menu-link {
+    padding-left: calc(1.5rem + 25px)
+}
+
+[data-theme=dark] .menuSearchBarContainer .p-inputtext {
+    background-color: #12121e !important;
+    border: 1px solid #2c2d44 !important;
+    color: #9899ac !important;
+}
+
+top-bar-menu {
+    display: flex;
+    flex: 1;
+}
+
+/* date picker dark mode start*/
+[data-theme=dark] .bs-datepicker-head {
+    background-color: #1e1e2d;
+}
+
+[data-theme=dark] .btn-today-wrapper .btn-success,
+[data-theme=dark] .btn-clear-wrapper .btn-success {
+    background-color: #1e1e2d;
+    border-color: #1e1e2d;
+}
+
+[data-theme=dark] .btn-today-wrapper .btn-success:not(:disabled):not(.disabled):active:focus,
+[data-theme=dark] .btn-clear-wrapper .btn-success:not(:disabled):not(.disabled):active:focus {
+    box-shadow: none;
+}
+
+[data-theme=dark] .btn-today-wrapper .btn-success:focus,
+[data-theme=dark] .btn-clear-wrapper .btn-success:focus {
+    box-shadow: none;
+}
+
+[data-theme=dark] .btn-today-wrapper .btn-success:not(:disabled):not(.disabled):active,
+[data-theme=dark] .btn-clear-wrapper .btn-success:not(:disabled):not(.disabled):active {
+    background-color: #2B2B40;
+    border-color: #2B2B40;
+}
+
+[data-theme=dark] .btn-today-wrapper .btn-success:hover,
+[data-theme=dark] .btn-clear-wrapper .btn-success:hover {
+    background-color: #2B2B40;
+    border-color: #2B2B40;
+}
+
+[data-theme=dark] .bs-datepicker-predefined-btns button.selected {
+    background-color: #1e1e2d;
+}
+
+[data-theme=dark] .bs-datepicker-body table td span.selected,
+[data-theme=dark] .bs-datepicker-body table td.selected span,
+[data-theme=dark] .bs-datepicker-body table td span[class*=select-]:after,
+[data-theme=dark] .bs-datepicker-body table td[class*=select-] span:after {
+    background-color: #1e1e2d;
+}
+
+[data-theme=dark] .bs-datepicker-body table td.week span {
+    color: #1e1e2d;
+}
+
+[data-theme=dark] .bs-datepicker-body table td.active-week span:hover {
+    cursor: pointer;
+    background-color: #1e1e2d;
+    color: #009ef7;
+    opacity: 0.5;
+    transition: 0s;
+}
+
+[data-theme=dark] .bs-datepicker {
+    background-color: #1e1e2d;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.3);
+    ;
+}
+
+[data-theme=dark] .bs-datepicker-body {
+    border: 0;
+}
+
+[data-theme=dark] .bs-datepicker-body table td.is-highlighted:not(.disabled):not(.selected) span,
+[data-theme=dark] .bs-datepicker-body table td span.is-highlighted:not(.disabled):not(.selected) {
+    color: #009ef7;
+    background:
+        #2B2B40 !important;
+    transition: 0s;
+}
+
+[data-theme=dark] .bs-datepicker-body table td span.selected,
+[data-theme=dark] .bs-datepicker-body table td.selected span,
+[data-theme=dark] .bs-datepicker-body table td span[class*=select-]:after,
+[data-theme=dark] .bs-datepicker-body table td[class*=select-] span:after {
+    background-color: #009ef7 !important;
+}
+
+[data-theme=dark] .bs-datepicker-body table td.active-week span:hover {
+    cursor: pointer;
+    background-color: #777;
+    color: #fff;
+    opacity: 0.5;
+    transition: 0s;
+}
+
+[data-theme=dark] .bs-datepicker-body table td span.today,
+[data-theme=dark] .bs-datepicker-body table td.today span {
+    color: #009ef7 !important;
+    background: #2B2B40;
+}
+
+[data-theme=dark] .bs-datepicker-body table td span.today.selected,
+[data-theme=dark] .bs-datepicker-body table td.today.selected span {
+    color: #fff !important;
+}
+
+[data-theme=dark] .bs-datepicker-body table td span.selected,
+[data-theme=dark] .bs-datepicker-body table td.selected span {
+    color: #ffffff;
+    background-color: #009ef7;
+}
+
+[data-theme=dark] .bs-datepicker-head button {
+    color: #CDCDDE;
+}
+
+[data-theme=dark] .bs-datepicker-head button:hover {
+    background-color: #2B2B40;
+    color: #009ef7;
+}
+
+[data-theme=dark] .bs-datepicker-body table.days td.active:not(.select-start):before,
+[data-theme=dark] .bs-datepicker-body table.days td.in-range:not(.select-start):before,
+[data-theme=dark].bs-datepicker-body table.days span.active:not(.select-start):before,
+[data-theme=dark] .bs-datepicker-body table.days span.in-range:not(.select-start):before {
+    background: #2B2B40;
+}
+
+/* date picker dark mode end*/

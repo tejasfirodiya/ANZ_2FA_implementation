@@ -1,0 +1,78 @@
+<div
+    appBsModal
+    #modal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="modal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span>{{ 'NotificationSettings' | localize }}</span>
+                    </h5>
+                    <button type="button" class="btn-close" (click)="close()" [attr.aria-label]="l('Close')">
+                    </button>
+                </div>
+                <div class="modal-body" *ngIf="settings">
+                    <h4>{{ 'ReceiveNotifications' | localize }}</h4>
+                    <label class="form-check form-check-custom form-check-solid form-switch py-1">
+                        <input
+                            type="checkbox"
+                            name="ReceiveNotifications"
+                            [(ngModel)]="settings.receiveNotifications"
+                            class="form-check-input"
+                            value="true"
+                        />
+                        <span class="form-check-label">
+                            ({{ 'ReceiveNotifications_Definition' | localize }})
+                        </span>
+                    </label>
+                    <h4 *ngIf="settings.notifications.length" class="mt-4">{{ 'NotificationTypes' | localize }}</h4>
+                    <p *ngIf="settings.notifications.length && !settings.receiveNotifications" class="text-danger">
+                        <small>{{ 'ReceiveNotifications_DisableInfo' | localize }}</small>
+                    </p>
+                    <label class="form-check form-check-custom form-check-solid py-1" *ngFor="let notification of settings.notifications">
+                        <input
+                            id="Notification_{{ notification.name }}"
+                            type="checkbox"
+                            name="Notification_{{ notification.name }}"
+                            [(ngModel)]="notification.isSubscribed"
+                            class="form-check-input"
+                            [disabled]="!settings.receiveNotifications"
+                        />
+                        <span class="form-check-label">
+                            {{ notification.displayName }}
+                            <span *ngIf="notification.description" class="help-block">
+                                {{ notification.description }}
+                            </span>
+                        </span>
+                    </label>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        [disabled]="saving"
+                        type="button"
+                        class="btn btn-light-primary fw-bold"
+                        (click)="close()"
+                    >
+                        {{ 'Cancel' | localize }}
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary fw-bold"
+                        [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"
+                    >
+                        <i class="fa fa-save"></i>
+                        <span>{{ 'Save' | localize }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

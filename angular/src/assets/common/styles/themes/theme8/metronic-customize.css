@@ -1,0 +1,15 @@
+#kt_content{
+    padding-top: 0px;
+  }
+  
+  .subheader {
+      margin-bottom: 10px;
+      padding-left: 10px;
+  }
+  
+  .menuSearchBarContainer input{
+    background: #1e1e2d !important;
+    border-color: #8a8a91 !important;
+    color: #fff !important;
+  }
+  

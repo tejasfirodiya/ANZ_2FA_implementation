@@ -1,0 +1,55 @@
+<div class="login-form" [@routerTransition]>
+    <div class="pb-13 pt-lg-0 pt-5">
+        <h3>
+            {{ 'VerifySecurityCode' | localize }}
+        </h3>
+    </div>
+    <form #twoFactorForm="ngForm" class="login-form form" method="post" (ngSubmit)="submit()">
+        <div class="mb-5">
+            <input
+                #passwordInput="ngModel"
+                autoFocus
+                [(ngModel)]="code"
+                class="form-control form-control-solid h-auto py-7 px-6 rounded-lg fs-h6"
+                type="password"
+                autocomplete="new-password"
+                placeholder="{{ 'Code' | localize }} *"
+                name="code"
+                required
+                maxlength="16"
+            />
+            <validation-messages [formCtrl]="passwordInput"></validation-messages>
+        </div>
+
+        <div
+            class="mb-5 mt-4"
+            *ngIf="s('Abp.Zero.UserManagement.TwoFactorLogin.IsRememberBrowserEnabled') === 'true'"
+        >
+            <label class="form-check form-check-custom form-check-solid py-1">
+                <input
+                    type="checkbox"
+                    name="rememberClient"
+                    [(ngModel)]="loginService.authenticateModel.rememberClient"
+                    class="form-check-input"
+                    value="true"
+                />
+                <span class="form-check-label">
+                    {{ 'RememberThisBrowser' | localize }}
+                </span>
+            </label>
+        </div>
+
+        <div class="pb-lg-0 pb-5">
+            <button
+                type="submit"
+                class="btn btn-primary fw-bolder fs-h6 px-8 py-4 my-3 me-3"
+                [disabled]="!twoFactorForm.form.valid"
+            >
+                {{ 'Submit' | localize }}
+            </button>
+            <span class="remaining-time-counter ml-5" *ngIf="remainingSeconds >= 0">
+                {{ 'RemainingTime' | localize }}: {{ 'SecondShort{0}' | localize: remainingSeconds }}.
+            </span>
+        </div>
+    </form>
+</div>

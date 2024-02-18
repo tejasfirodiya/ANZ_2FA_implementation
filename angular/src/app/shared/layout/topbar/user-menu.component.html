@@ -1,0 +1,311 @@
+<div class="d-flex align-items-center ms-1 ms-lg-3">
+    <div
+        *ngIf="iconOnly"
+        href="#"
+        [class]="togglerCssClass"
+        id="kt_quick_user_toggle"
+        data-kt-menu-trigger="click"
+        data-kt-menu-attach="parent"
+        data-kt-menu-placement="bottom-end"
+    >
+        <span class="symbol symbol-30px">
+            <span class="svg-icon svg-icon-muted svg-icon-2">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M6.28548 15.0861C7.34369 13.1814 9.35142 12 11.5304 12H12.4696C14.6486 12 16.6563 13.1814 17.7145 15.0861L19.3493 18.0287C20.0899 19.3618 19.1259 21 17.601 21H6.39903C4.87406 21 3.91012 19.3618 4.65071 18.0287L6.28548 15.0861Z"
+                        fill="currentColor"
+                    />
+                    <rect opacity="0.3" x="8" y="3" width="8" height="8" rx="4" fill="currentColor" />
+                </svg>
+            </span>
+        </span>
+    </div>
+
+    <div
+        *ngIf="!iconOnly"
+        [class]="togglerCssClass"
+        id="kt_quick_user_toggle"
+        data-kt-menu-trigger="click"
+        data-kt-menu-attach="parent"
+        data-kt-menu-placement="bottom-end"
+    >
+        <div
+            [class]="togglerCssClass"
+            data-kt-menu-trigger="click"
+            data-kt-menu-attach="parent"
+            data-kt-menu-placement="bottom-end"
+        >
+            <img [src]="profilePicture" alt="user" [class]="profileImageCssClass" />
+        </div>
+    </div>
+
+    <div
+        class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-400px"
+        data-kt-menu="true"
+    >
+        <div class="menu-item px-3">
+            <div class="menu-content d-flex align-items-center px-3">
+                <div class="symbol symbol-50px me-5">
+                    <img alt="Logo" [src]="profilePicture" />
+                </div>
+                <div class="d-flex flex-column">
+                    <div class="fw-bolder d-flex align-items-center fs-5">
+                        <span *ngIf="isMultiTenancyEnabled" class="tenancy-name">{{ tenancyName }}\</span>
+                        <div class="text-break">{{ userName }}</div>
+                    </div>
+                    <a href="#" class="fw-bold text-muted text-hover-primary fs-7">
+                        {{ emailAddress }}
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="separator my-2"></div>
+        <!-- Back to My Account -->
+        <div *ngIf="isImpersonatedLogin" class="menu-item px-5" id="UserProfileBackToMyAccountButton">
+            <a href="javascript:;" (click)="backToMyAccount()" class="menu-link px-5">
+                <span class="menu-icon">
+                    <span class="svg-icon svg-icon-muted svg-icon-1 text-danger">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M9.60001 11H21C21.6 11 22 11.4 22 12C22 12.6 21.6 13 21 13H9.60001V11Z"
+                                fill="currentColor"
+                            />
+                            <path
+                                opacity="0.3"
+                                d="M9.6 20V4L2.3 11.3C1.9 11.7 1.9 12.3 2.3 12.7L9.6 20Z"
+                                fill="currentColor"
+                            />
+                        </svg>
+                    </span>
+                </span>
+                {{ 'BackToMyAccount' | localize }}
+            </a>
+        </div>
+        <!-- Linked Accounts -->
+        <div class="menu-item px-5" data-kt-menu-trigger="hover" data-kt-menu-placement="left-start">
+            <a
+                href="javascript:;"
+                (click)="recentlyLinkedUsers?.length == 0 && showLinkedAccounts()"
+                class="menu-link px-5 linked-accounts"
+            >
+                <span class="menu-icon">
+                    <span class="svg-icon svg-icon-muted svg-icon-1">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                opacity="0.3"
+                                d="M18.4 5.59998C18.7766 5.9772 18.9881 6.48846 18.9881 7.02148C18.9881 7.55451 18.7766 8.06577 18.4 8.44299L14.843 12C14.466 12.377 13.9547 12.5887 13.4215 12.5887C12.8883 12.5887 12.377 12.377 12 12C11.623 11.623 11.4112 11.1117 11.4112 10.5785C11.4112 10.0453 11.623 9.53399 12 9.15698L15.553 5.604C15.9302 5.22741 16.4415 5.01587 16.9745 5.01587C17.5075 5.01587 18.0188 5.22741 18.396 5.604L18.4 5.59998ZM20.528 3.47205C20.0614 3.00535 19.5074 2.63503 18.8977 2.38245C18.288 2.12987 17.6344 1.99988 16.9745 1.99988C16.3145 1.99988 15.661 2.12987 15.0513 2.38245C14.4416 2.63503 13.8876 3.00535 13.421 3.47205L9.86801 7.02502C9.40136 7.49168 9.03118 8.04568 8.77863 8.6554C8.52608 9.26511 8.39609 9.91855 8.39609 10.5785C8.39609 11.2384 8.52608 11.8919 8.77863 12.5016C9.03118 13.1113 9.40136 13.6653 9.86801 14.132C10.3347 14.5986 10.8886 14.9688 11.4984 15.2213C12.1081 15.4739 12.7616 15.6039 13.4215 15.6039C14.0815 15.6039 14.7349 15.4739 15.3446 15.2213C15.9543 14.9688 16.5084 14.5986 16.975 14.132L20.528 10.579C20.9947 10.1124 21.3649 9.55844 21.6175 8.94873C21.8701 8.33902 22.0001 7.68547 22.0001 7.02551C22.0001 6.36555 21.8701 5.71201 21.6175 5.10229C21.3649 4.49258 20.9947 3.93867 20.528 3.47205Z"
+                                fill="currentColor"
+                            />
+                            <path
+                                d="M14.132 9.86804C13.6421 9.37931 13.0561 8.99749 12.411 8.74695L12 9.15698C11.6234 9.53421 11.4119 10.0455 11.4119 10.5785C11.4119 11.1115 11.6234 11.6228 12 12C12.3766 12.3772 12.5881 12.8885 12.5881 13.4215C12.5881 13.9545 12.3766 14.4658 12 14.843L8.44699 18.396C8.06999 18.773 7.55868 18.9849 7.02551 18.9849C6.49235 18.9849 5.98101 18.773 5.604 18.396C5.227 18.019 5.0152 17.5077 5.0152 16.9745C5.0152 16.4413 5.227 15.93 5.604 15.553L8.74701 12.411C8.28705 11.233 8.28705 9.92498 8.74701 8.74695C8.10159 8.99737 7.5152 9.37919 7.02499 9.86804L3.47198 13.421C2.52954 14.3635 2.00009 15.6417 2.00009 16.9745C2.00009 18.3073 2.52957 19.5855 3.47202 20.528C4.41446 21.4704 5.69269 21.9999 7.02551 21.9999C8.35833 21.9999 9.63656 21.4704 10.579 20.528L14.132 16.975C14.5987 16.5084 14.9689 15.9544 15.2215 15.3447C15.4741 14.735 15.6041 14.0815 15.6041 13.4215C15.6041 12.7615 15.4741 12.108 15.2215 11.4983C14.9689 10.8886 14.5987 10.3347 14.132 9.86804Z"
+                                fill="currentColor"
+                            />
+                        </svg>
+                    </span>
+                </span>
+                <span class="menu-title">
+                    {{ 'ManageLinkedAccounts' | localize }}
+                </span>
+                <span class="menu-arrow" [ngClass]="{ 'd-none': recentlyLinkedUsers?.length === 0 }"></span>
+            </a>
+            <div
+                class="menu-sub menu-sub-dropdown w-255px py-4"
+                [ngClass]="{ 'd-none': recentlyLinkedUsers?.length === 0 }"
+            >
+                <div class="menu-item px-5" id="ManageLinkedAccountsLink">
+                    <a href="javascript:;" (click)="showLinkedAccounts()" class="menu-link px-5">
+                        {{ 'ManageLinkedAccounts' | localize }}
+                    </a>
+                </div>
+                <div id="RecentlyUsedLinkedUsers" class="linked-accounts" role="menu">
+                    <div class="separator my-2"></div>
+                    <div class="menu-item px-5" *ngFor="let linkedUser of recentlyLinkedUsers">
+                        <a
+                            href="javascript:;"
+                            (click)="switchToLinkedUser(linkedUser)"
+                            class="menu-link px-5 recently-linked-user"
+                        >
+                            {{ getShownUserName(linkedUser) }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- User Delegation -->
+        <div *ngIf="appSession.application.userDelegationIsEnabled && !isImpersonatedLogin" class="menu-item px-5">
+            <a href="javascript:;" (click)="showUserDelegations()" class="menu-link px-5" id="ManageUserDelegations">
+                <span class="menu-icon">
+                    <span class="svg-icon svg-icon-muted svg-icon-1">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M16.0173 9H15.3945C14.2833 9 13.263 9.61425 12.7431 10.5963L12.154 11.7091C12.0645 11.8781 12.1072 12.0868 12.2559 12.2071L12.6402 12.5183C13.2631 13.0225 13.7556 13.6691 14.0764 14.4035L14.2321 14.7601C14.2957 14.9058 14.4396 15 14.5987 15H18.6747C19.7297 15 20.4057 13.8774 19.912 12.945L18.6686 10.5963C18.1487 9.61425 17.1285 9 16.0173 9Z"
+                                fill="currentColor"
+                            />
+                            <rect opacity="0.3" x="14" y="4" width="4" height="4" rx="2" fill="currentColor" />
+                            <path
+                                d="M4.65486 14.8559C5.40389 13.1224 7.11161 12 9 12C10.8884 12 12.5961 13.1224 13.3451 14.8559L14.793 18.2067C15.3636 19.5271 14.3955 21 12.9571 21H5.04292C3.60453 21 2.63644 19.5271 3.20698 18.2067L4.65486 14.8559Z"
+                                fill="currentColor"
+                            />
+                            <rect opacity="0.3" x="6" y="5" width="6" height="6" rx="3" fill="currentColor" />
+                        </svg>
+                    </span>
+                </span>
+                {{ 'ManageUserDelegations' | localize }}
+            </a>
+        </div>
+        <!-- Change Password -->
+        <div class="menu-item px-5">
+            <a href="javascript:;" (click)="changePassword()" class="menu-link px-5" id="UserProfileChangePasswordLink">
+                <span class="menu-icon">
+                    <span class="svg-icon svg-icon-muted svg-icon-1">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="4" fill="currentColor" />
+                            <rect x="11" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                            <rect x="15" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                            <rect x="7" y="11" width="2.6" height="2.6" rx="1.3" fill="currentColor" />
+                        </svg>
+                    </span>
+                </span>
+                {{ 'ChangePassword' | localize }}
+            </a>
+        </div>
+        <!-- Login Attempts -->
+        <div class="menu-item px-5">
+            <a href="javascript:;" (click)="showLoginAttempts()" class="menu-link px-5" id="ShowLoginAttemptsLink">
+                <span class="menu-icon">
+                    <span class="svg-icon svg-icon-muted svg-icon-1">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                opacity="0.3"
+                                d="M19 22H5C4.4 22 4 21.6 4 21V3C4 2.4 4.4 2 5 2H14L20 8V21C20 21.6 19.6 22 19 22ZM12.5 18C12.5 17.4 12.6 17.5 12 17.5H8.5C7.9 17.5 8 17.4 8 18C8 18.6 7.9 18.5 8.5 18.5L12 18C12.6 18 12.5 18.6 12.5 18ZM16.5 13C16.5 12.4 16.6 12.5 16 12.5H8.5C7.9 12.5 8 12.4 8 13C8 13.6 7.9 13.5 8.5 13.5H15.5C16.1 13.5 16.5 13.6 16.5 13ZM12.5 8C12.5 7.4 12.6 7.5 12 7.5H8C7.4 7.5 7.5 7.4 7.5 8C7.5 8.6 7.4 8.5 8 8.5H12C12.6 8.5 12.5 8.6 12.5 8Z"
+                                fill="currentColor"
+                            />
+                            <rect x="7" y="17" width="6" height="2" rx="1" fill="currentColor" />
+                            <rect x="7" y="12" width="10" height="2" rx="1" fill="currentColor" />
+                            <rect x="7" y="7" width="6" height="2" rx="1" fill="currentColor" />
+                            <path d="M15 8H20L14 2V7C14 7.6 14.4 8 15 8Z" fill="currentColor" />
+                        </svg>
+                    </span>
+                </span>
+                {{ 'LoginAttempts' | localize }}
+            </a>
+        </div>
+        <!-- Profile Picture -->
+        <div class="menu-item px-5 d-flex">
+            <a
+                href="javascript:;"
+                (click)="changeProfilePicture()"
+                class="menu-link px-5"
+                id="UserProfileChangePictureLink"
+            >
+                <span class="menu-icon">
+                    <span class="svg-icon svg-icon-muted svg-icon-1">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                opacity="0.3"
+                                d="M22 5V19C22 19.6 21.6 20 21 20H19.5L11.9 12.4C11.5 12 10.9 12 10.5 12.4L3 20C2.5 20 2 19.5 2 19V5C2 4.4 2.4 4 3 4H21C21.6 4 22 4.4 22 5ZM7.5 7C6.7 7 6 7.7 6 8.5C6 9.3 6.7 10 7.5 10C8.3 10 9 9.3 9 8.5C9 7.7 8.3 7 7.5 7Z"
+                                fill="currentColor"
+                            />
+                            <path
+                                d="M19.1 10C18.7 9.60001 18.1 9.60001 17.7 10L10.7 17H2V19C2 19.6 2.4 20 3 20H21C21.6 20 22 19.6 22 19V12.9L19.1 10Z"
+                                fill="currentColor"
+                            />
+                        </svg>
+                    </span>
+                </span>
+                {{ 'ChangeProfilePicture' | localize }}
+            </a>
+        </div>
+        <!-- My Settings -->
+        <div class="menu-item px-5 d-flex">
+            <a href="javascript:;" (click)="changeMySettings()" class="menu-link px-5" id="UserProfileMySettingsLink">
+                <span class="menu-icon">
+                    <span class="svg-icon svg-icon-muted svg-icon-1">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M17.5 11H6.5C4 11 2 9 2 6.5C2 4 4 2 6.5 2H17.5C20 2 22 4 22 6.5C22 9 20 11 17.5 11ZM15 6.5C15 7.9 16.1 9 17.5 9C18.9 9 20 7.9 20 6.5C20 5.1 18.9 4 17.5 4C16.1 4 15 5.1 15 6.5Z"
+                                fill="currentColor"
+                            />
+                            <path
+                                opacity="0.3"
+                                d="M17.5 22H6.5C4 22 2 20 2 17.5C2 15 4 13 6.5 13H17.5C20 13 22 15 22 17.5C22 20 20 22 17.5 22ZM4 17.5C4 18.9 5.1 20 6.5 20C7.9 20 9 18.9 9 17.5C9 16.1 7.9 15 6.5 15C5.1 15 4 16.1 4 17.5Z"
+                                fill="currentColor"
+                            />
+                        </svg>
+                    </span>
+                </span>
+                {{ 'MySettings' | localize }}
+            </a>
+        </div>
+        <!-- Visual Settings -->
+        <div *ngIf="!('Pages.Administration.UiCustomization' | permission)" class="menu-item px-5 d-flex">
+            <a routerLink="admin/ui-customization" class="menu-link px-5" id="UserProfileVisualSettingsLink">
+                <span class="menu-icon">
+                    <span class="svg-icon svg-icon-muted svg-icon-1">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M20 7H3C2.4 7 2 6.6 2 6V3C2 2.4 2.4 2 3 2H20C20.6 2 21 2.4 21 3V6C21 6.6 20.6 7 20 7ZM7 9H3C2.4 9 2 9.4 2 10V20C2 20.6 2.4 21 3 21H7C7.6 21 8 20.6 8 20V10C8 9.4 7.6 9 7 9Z"
+                                fill="currentColor"
+                            />
+                            <path
+                                opacity="0.3"
+                                d="M20 21H11C10.4 21 10 20.6 10 20V10C10 9.4 10.4 9 11 9H20C20.6 9 21 9.4 21 10V20C21 20.6 20.6 21 20 21Z"
+                                fill="currentColor"
+                            />
+                        </svg>
+                    </span>
+                </span>
+                {{ 'VisualSettings' | localize }}
+            </a>
+        </div>
+        <!-- GDPR -->
+        <div class="menu-item px-5 d-flex">
+            <a
+                href="javascript:;"
+                (click)="downloadCollectedData()"
+                class="menu-link px-5"
+                id="UserDownloadCollectedDataLink"
+            >
+                <span class="menu-icon">
+                    <span class="svg-icon svg-icon-muted svg-icon-1">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path opacity="0.3" d="M10 4H21C21.6 4 22 4.4 22 5V7H10V4Z" fill="currentColor" />
+                            <path
+                                opacity="0.3"
+                                d="M13 14.4V9C13 8.4 12.6 8 12 8C11.4 8 11 8.4 11 9V14.4H13Z"
+                                fill="currentColor"
+                            />
+                            <path
+                                d="M10.4 3.60001L12 6H21C21.6 6 22 6.4 22 7V19C22 19.6 21.6 20 21 20H3C2.4 20 2 19.6 2 19V4C2 3.4 2.4 3 3 3H9.20001C9.70001 3 10.2 3.20001 10.4 3.60001ZM13 14.4V9C13 8.4 12.6 8 12 8C11.4 8 11 8.4 11 9V14.4H8L11.3 17.7C11.7 18.1 12.3 18.1 12.7 17.7L16 14.4H13Z"
+                                fill="currentColor"
+                            />
+                        </svg>
+                    </span>
+                </span>
+                {{ 'DownloadCollectedData' | localize }}
+            </a>
+        </div>
+        <div class="separator my-2"></div>
+        <div class="menu-item px-5 d-flex">
+            <a href="javascript:;" (click)="logout()" class="menu-link px-5">
+                <span class="menu-icon">
+                    <span class="svg-icon svg-icon-muted svg-icon-1">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect opacity="0.3" x="8.5" y="11" width="12" height="2" rx="1" fill="currentColor" />
+                            <path
+                                d="M10.3687 11.6927L12.1244 10.2297C12.5946 9.83785 12.6268 9.12683 12.194 8.69401C11.8043 8.3043 11.1784 8.28591 10.7664 8.65206L7.84084 11.2526C7.39332 11.6504 7.39332 12.3496 7.84084 12.7474L10.7664 15.3479C11.1784 15.7141 11.8043 15.6957 12.194 15.306C12.6268 14.8732 12.5946 14.1621 12.1244 13.7703L10.3687 12.3073C10.1768 12.1474 10.1768 11.8526 10.3687 11.6927Z"
+                                fill="currentColor"
+                            />
+                            <path
+                                opacity="0.5"
+                                d="M16 5V6C16 6.55228 15.5523 7 15 7C14.4477 7 14 6.55228 14 6C14 5.44772 13.5523 5 13 5H6C5.44771 5 5 5.44772 5 6V18C5 18.5523 5.44771 19 6 19H13C13.5523 19 14 18.5523 14 18C14 17.4477 14.4477 17 15 17C15.5523 17 16 17.4477 16 18V19C16 20.1046 15.1046 21 14 21H5C3.89543 21 3 20.1046 3 19V5C3 3.89543 3.89543 3 5 3H14C15.1046 3 16 3.89543 16 5Z"
+                                fill="currentColor"
+                            />
+                        </svg>
+                    </span>
+                </span>
+                {{ 'Logout' | localize }}
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,96 @@
+<!-- BEGIN: Horizontal Menu -->
+<div
+    id="kt_header_menu"
+    data-kt-menu="true"
+    [class]="menuClass"
+>
+    <div class="menu-item here menu-lg-down-accordion me-lg-1" aria-haspopup="true" *ngIf="isMobileDevice()">
+        <menu-search-bar></menu-search-bar>
+    </div>
+    <ng-container *ngFor="let item of menu.items">
+        <ng-container
+            *ngIf="item.name"
+            [ngTemplateOutlet]="kt_menu"
+            [ngTemplateOutletContext]="{ item: item, depth: 0 }"
+        ></ng-container>
+    </ng-container>
+    <div class="menu-item here menu-lg-down-accordion me-lg-1" aria-haspopup="true" *ngIf="!isMobileDevice()">
+        <menu-search-bar></menu-search-bar>
+    </div>
+</div>
+<!-- END: Horizontal Menu -->
+
+<ng-template #kt_menu let-item="item" let-parentItem="parentItem" let-depth="depth">
+    <div
+        aria-haspopup="true"
+        class="{{ getItemCssClasses(item, parentItem, depth) }} me-lg-1"
+        *ngIf="showMenuItem(item)"
+        data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
+        [attr.data-kt-menu-placement]="item.items.length ? (!parentItem ? 'bottom-start': 'right-start') : null"
+    >
+        <!-- if item has submenu -->
+        <ng-container *ngIf="item.items.length">
+            <span class="{{ getAnchorItemCssClasses(item, parentItem) }}">
+                <ng-container
+                    [ngTemplateOutlet]="kt_menu_item_inner"
+                    [ngTemplateOutletContext]="{ item: item, parentItem: parentItem, depth: depth + 1 }"
+                ></ng-container>
+
+                <i *ngIf="item.items.length && !parentItem" class="la la-angle-down ms-2"></i>
+                <i *ngIf="item.items.length && parentItem" class="la la-angle-right"></i>
+            </span>
+        </ng-container>
+
+        <!-- if item hasn't sumbenu -->
+        <ng-container *ngIf="!item.items.length">
+            <a
+                *ngIf="!item.external"
+                [routerLink]="item.route"
+                [ngClass]="{'active': isMenuItemIsActive(item)}"
+                [queryParams]="item.parameters"
+                class="{{ getAnchorItemCssClasses(item, parentItem) }}"
+            >
+                <ng-container
+                    [ngTemplateOutlet]="kt_menu_item_inner"
+                    [ngTemplateOutletContext]="{ item: item, parentItem: parentItem, depth: depth + 1 }"
+                ></ng-container>
+            </a>
+            <a
+                *ngIf="item.external"
+                [attr.href]="[item.route]"
+                class="{{ getAnchorItemCssClasses(item, parentItem) }}"
+            >
+                <ng-container
+                    [ngTemplateOutlet]="kt_menu_item_inner"
+                    [ngTemplateOutletContext]="{ item: item, parentItem: parentItem, depth: depth + 1 }"
+                ></ng-container>
+            </a>
+        </ng-container>
+
+        <!-- if menu item has submenu child then recursively call new menu item component -->
+        <ng-container *ngIf="item.items.length">
+            <div class="{{ getSubmenuCssClasses(item, parentItem, depth) }}" data-kt-menu-dismiss="true">
+                <span class="menu-arrow" [ngClass]="{ 'menu-arrow-adjust': !parentItem }"></span>
+                <div *ngIf="item.items.length" class="menu-subnav">
+                    <ng-container *ngFor="let child of item.items">
+                        <ng-container
+                            [ngTemplateOutlet]="kt_menu"
+                            [ngTemplateOutletContext]="{ item: child, parentItem: item, depth: depth + 1 }"
+                        ></ng-container>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</ng-template>
+
+<!-- item inner -->
+<ng-template #kt_menu_item_inner let-item="item" let-parentItem="parentItem">
+    <!-- if menu item has icon -->
+    <i *ngIf="item.icon" class="menu-icon" [ngClass]="item.icon"></i>
+
+    <ng-container>
+        <!-- menu item title text -->
+        <span class="menu-title">{{ item.name | localize }}</span>
+    </ng-container>
+</ng-template>

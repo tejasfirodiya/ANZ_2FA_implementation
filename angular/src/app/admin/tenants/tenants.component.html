@@ -1,0 +1,302 @@
+<div [@routerTransition]>
+    <sub-header [title]="'Tenants' | localize" [description]="'TenantsHeaderInfo' | localize">
+        <div role="actions">
+            <button *ngIf="'Pages.Tenants.Create' | permission" class="btn btn-primary" (click)="createTenant()">
+                <i class="fa fa-plus btn-md-icon"></i>
+                <span class="d-none d-md-inline-block">
+                    {{ 'CreateNewTenant' | localize }}
+                </span>
+            </button>
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-body">
+                <div class="form">
+                    <form (submit)="getTenants()" autocomplete="new-password">
+                        <div class="form-body">
+                            <div class="row mb-4">
+                                <div class="col-xl-6">
+                                    <label for="TenantNameOrTenancyCode" class="form-label">
+                                        {{ 'TenantNameOrTenancyCode' | localize }}
+                                    </label>
+                                    <div class="input-group">
+                                        <input
+                                            id="TenantNameOrTenancyCode"
+                                            [(ngModel)]="filters.filterText"
+                                            name="filterText"
+                                            class="form-control"
+                                            placeholder="{{ 'SearchWithThreeDot' | localize }}"
+                                            type="text"
+                                        />
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="flaticon-search-1" [attr.aria-label]="l('Search')"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <label for="EditionDropdown" class="form-label">{{ 'Edition' | localize }}</label>
+                                    <edition-combo [(selectedEdition)]="filters.selectedEditionId"></edition-combo>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-xl-6">
+                                    <label class="form-check form-check-solid form-label py-1 mb-1">
+                                        <input
+                                            id="TenantsTable_SubscriptionEndDateRangeActive"
+                                            type="checkbox"
+                                            name="SubscriptionEndDateRangeActive"
+                                            [(ngModel)]="filters.subscriptionEndDateRangeActive"
+                                            class="form-check-input"
+                                            value="true"
+                                        />
+                                        <span class="form-check-label">
+                                            {{ 'SubscriptionEndDate' | localize }}
+                                        </span>
+                                    </label>
+                                    <input
+                                        class="form-control"
+                                        name="SubscriptionEndDateRange"
+                                        [attr.disabled]="!filters.subscriptionEndDateRangeActive ? 'disabled' : null"
+                                        #drpSubscriptionEndDateRange="bsDaterangepicker"
+                                        bsDaterangepicker
+                                        dateRangePickerLuxonModifier
+                                        [(date)]="subscriptionDateRange"
+                                    />
+                                </div>
+                                <div class="col-xl-6">
+                                    <label class="form-check form-check-solid form-label py-1 mb-1">
+                                        <input
+                                            id="TenantsTable_CreationDateRangeActive"
+                                            type="checkbox"
+                                            name="CreationDateRangeActive"
+                                            [(ngModel)]="filters.creationDateRangeActive"
+                                            class="form-check-input"
+                                            value="true"
+                                        />
+                                        <span class="form-check-label">
+                                            {{ 'CreationTime' | localize }}
+                                        </span>
+                                    </label>
+                                    <input
+                                        class="form-control"
+                                        name="CreationDateRange"
+                                        [attr.disabled]="!filters.creationDateRangeActive ? 'disabled' : null"
+                                        #drpCreationDateRange="bsDaterangepicker"
+                                        bsDaterangepicker
+                                        dateRangePickerLuxonModifier
+                                        [(date)]="creationDateRange"
+                                    />
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-xl-12 text-end">
+                                    <button name="RefreshButton" class="btn btn-primary">
+                                        <i class="fa fa-sync btn-md-icon"></i>
+                                        <span class="d-none d-md-inline-block">
+                                            {{ 'Refresh' | localize }}
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="col primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getTenants($event)"
+                            [value]="primengTableHelper.records"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [tableStyle]="{'min-width': '50rem'}"
+                        >
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="width: 130px">{{ 'Actions' | localize }}</th>
+                                    <th pSortableColumn="tenancyName">
+                                        {{ 'TenancyCodeName' | localize }}
+                                        <p-sortIcon field="tenancyName"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="name">
+                                        {{ 'TenantName' | localize }}
+                                        <p-sortIcon field="name"></p-sortIcon>
+                                    </th>
+                                    <th>{{ 'Edition' | localize }}</th>
+                                    <th pSortableColumn="subscriptionEndDateUtc">
+                                        {{ 'SubscriptionEndDateUtc' | localize }}
+                                        <p-sortIcon field="subscriptionEndDateUtc"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="isActive">
+                                        {{ 'Active' | localize }}
+                                        <p-sortIcon field="isActive"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="creationTime">
+                                        {{ 'CreationTime' | localize }}
+                                        <p-sortIcon field="creationTime"></p-sortIcon>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 130px">
+                                        <div class="btn-group" dropdown placement="bottom left" container="body">
+                                            <button
+                                                id="dropdownButton"
+                                                type="button"
+                                                class="btn btn-primary btn-sm dropdown-toggle"
+                                                dropdownToggle
+                                                aria-controls="dropdownMenu"
+                                            >
+                                                <i class="fa fa-cog"></i>
+                                                <span class="caret"></span>
+                                                {{ 'Actions' | localize }}
+                                            </button>
+                                            <ul
+                                                id="dropdownMenu"
+                                                class="dropdown-menu"
+                                                role="menu"
+                                                *dropdownMenu
+                                                aria-labelledby="dropdownButton"
+                                            >
+                                                <li
+                                                    *ngIf="'Pages.Tenants.Impersonation' | permission"
+                                                    [class.disabled]="!record.isActive"
+                                                    role="menuitem"
+                                                >
+                                                    <a
+                                                        href="javascript:;"
+                                                        class="dropdown-item"
+                                                        [class.disabled]="!record.isActive"
+                                                        (click)="
+                                                            record.isActive && showUserImpersonateLookUpModal(record)
+                                                        "
+                                                    >
+                                                        {{ 'LoginAsThisTenant' | localize }}
+                                                    </a>
+                                                </li>
+                                                <li *ngIf="'Pages.Tenants.Edit' | permission" role="menuitem">
+                                                    <a
+                                                        href="javascript:;"
+                                                        class="dropdown-item"
+                                                        (click)="editTenantModal.show(record.id)"
+                                                    >
+                                                        {{ 'Edit' | localize }}
+                                                    </a>
+                                                </li>
+                                                <li *ngIf="'Pages.Tenants.ChangeFeatures' | permission" role="menuitem">
+                                                    <a
+                                                        href="javascript:;"
+                                                        class="dropdown-item"
+                                                        (click)="tenantFeaturesModal.show(record.id, record.name)"
+                                                    >
+                                                        {{ 'Features' | localize }}
+                                                    </a>
+                                                </li>
+                                                <li *ngIf="'Pages.Tenants.Delete' | permission" role="menuitem">
+                                                    <a
+                                                        href="javascript:;"
+                                                        class="dropdown-item"
+                                                        (click)="deleteTenant(record)"
+                                                    >
+                                                        {{ 'Delete' | localize }}
+                                                    </a>
+                                                </li>
+                                                <li role="menuitem">
+                                                    <a
+                                                        href="javascript:;"
+                                                        class="dropdown-item"
+                                                        (click)="unlockUser(record)"
+                                                    >
+                                                        {{ 'Unlock' | localize }}
+                                                    </a>
+                                                </li>
+                                                <li *ngIf="entityHistoryEnabled" role="menuitem">
+                                                    <a
+                                                        href="javascript:;"
+                                                        class="dropdown-item"
+                                                        (click)="showHistory(record)"
+                                                    >
+                                                        {{ 'History' | localize }}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="p-column-title">{{ 'TenancyCodeName' | localize }}</span>
+                                        <i
+                                            *ngIf="record.connectionString"
+                                            class="fa fa-database"
+                                            title="{{ 'HasOwnDatabase' | localize }}"
+                                        ></i>
+                                        {{ record.tenancyName }}
+                                    </td>
+                                    <td>
+                                        <span class="p-column-title">{{ 'Name' | localize }}</span>
+                                        {{ record.name }}
+                                    </td>
+                                    <td>
+                                        <span class="p-column-title">{{ 'Edition' | localize }}</span>
+                                        {{ record.editionDisplayName }}
+                                    </td>
+                                    <td>
+                                        <span class="p-column-title">
+                                            {{ 'SubscriptionEndDateUtc' | localize }}
+                                        </span>
+                                        {{
+                                            record.subscriptionEndDateUtc
+                                                ? (record.subscriptionEndDateUtc | luxonFormat: 'F')
+                                                : '-'
+                                        }}
+                                    </td>
+                                    <td>
+                                        <span class="p-column-title">{{ 'Active' | localize }}</span>
+                                        <span *ngIf="record.isActive" class="badge badge-success badge-inline">
+                                            {{ 'Yes' | localize }}
+                                        </span>
+                                        <span *ngIf="!record.isActive" class="badge badge-dark badge-inline">
+                                            {{ 'No' | localize }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="p-column-title">{{ 'CreationTime' | localize }}</span>
+                                        {{ record.creationTime | luxonFormat: 'F' }}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{ 'NoData' | localize }}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getTenants($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount
+                                "
+                            ></p-paginator>
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <createTenantModal #createTenantModal (modalSave)="getTenants()"></createTenantModal>
+    <editTenantModal #editTenantModal (modalSave)="getTenants()"></editTenantModal>
+    <tenantFeaturesModal #tenantFeaturesModal></tenantFeaturesModal>
+    <commonLookupModal #impersonateUserLookupModal (itemSelected)="impersonateUser($event)"></commonLookupModal>
+    <entityTypeHistoryModal #entityTypeHistoryModal></entityTypeHistoryModal>
+</div>

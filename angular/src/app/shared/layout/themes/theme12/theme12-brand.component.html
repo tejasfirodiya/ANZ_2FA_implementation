@@ -1,0 +1,42 @@
+<div class="header-logo me-5 me-md-10 flex-grow-1 flex-lg-grow-0">
+    <a href="/">
+        <!-- Default Logos -->
+        <img
+            alt="Logo"
+            *ngIf="!appSession.tenant || !appSession.tenant.HasLogo()"
+            [src]="defaultLogo"
+            class="d-none d-lg-block h-30px"
+        />
+        <img
+            alt="Logo"
+            *ngIf="!appSession.tenant || !appSession.tenant.HasLogo()"
+            [src]="defaultLogo"
+            class="d-lg-none h-25px"
+        />
+        <!-- Tenant Logos -->
+        <img
+            alt="Logo"
+            *ngIf="appSession.tenant && appSession.tenant.HasLogo()"
+            [src]="
+                remoteServiceBaseUrl +
+                '/TenantCustomization/GetTenantLogo?skin=' +
+                skin +
+                '&tenantId=' +
+                appSession.tenant.id
+            "
+            class="d-none d-lg-block h-30px"
+        />
+        <img
+            alt="Logo"
+            *ngIf="appSession.tenant && appSession.tenant.HasLogo()"
+            [src]="
+                remoteServiceBaseUrl +
+                '/TenantCustomization/GetTenantLogo?skin=' +
+                skin +
+                '&tenantId=' +
+                appSession.tenant.id
+            "
+            class="d-lg-none h-25px"
+        />
+    </a>
+</div>

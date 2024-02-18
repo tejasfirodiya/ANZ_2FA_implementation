@@ -1,0 +1,33 @@
+<div class="login-form" [@routerTransition]>
+    <div class="card card-bordered">
+        <div class="card-header align-items-center">
+            <h3>
+                {{ 'TenantSignUp' | localize }}
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="mb-5 row">
+                <label class="col-sm-4">{{ l('Item') }}</label>
+                <div class="col-sm-8 text-end">
+                    <p class="fw-bold">
+                        {{ description }}
+                    </p>
+                </div>
+            </div>
+            <div class="mb-5 row">
+                <label class="col-sm-4">{{ l('Price') }}</label>
+                <div class="col-sm-8 text-end">
+                    <p class="fw-bold" id="totalPrice">
+                        {{ appSession.application.currencySign }}{{ amount | number: '1.2-2' }}
+                    </p>
+                </div>
+            </div>
+
+            <button id="stripe-checkout" class="btn btn-primary w-100" [disabled]="stripeIsLoading">
+                {{ 'Purchase' | localize }}
+            </button>
+
+            <div [busyIf]="stripeIsLoading" *ngIf="stripeIsLoading"></div>
+        </div>
+    </div>
+</div>

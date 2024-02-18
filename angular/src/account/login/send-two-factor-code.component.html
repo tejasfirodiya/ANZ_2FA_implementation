@@ -1,0 +1,38 @@
+<div class="login-form" [@routerTransition]>
+    <div class="pb-13 pt-lg-0 pt-5">
+        <h3 class="fw-bolder text-dark fs-h4 fs-h1-lg">
+            {{ 'SendSecurityCode' | localize }}
+        </h3>
+    </div>
+    <form
+        #twoFactorForm="ngForm"
+        class="login-form form"
+        method="post"
+        (ngSubmit)="submit()"
+        *ngIf="loginService.authenticateResult"
+    >
+        <p>{{ 'SendSecurityCode_Information' | localize }}</p>
+        <div class="mb-5">
+            <select
+                autoFocus
+                size="1"
+                class="form-control form-control-solid h-auto py-7 px-6 rounded-lg fs-h6"
+                [(ngModel)]="selectedTwoFactorProvider"
+                name="selectedTwoFactorProvider"
+            >
+                <option
+                    *ngFor="let provider of loginService.authenticateResult.twoFactorAuthProviders"
+                    [value]="provider"
+                >
+                    {{ provider }}
+                </option>
+            </select>
+        </div>
+
+        <div class="pb-lg-0 pb-5">
+            <button type="submit" class="btn btn-primary fw-bolder fs-h6 px-8 py-4 my-3 me-3">
+                {{ 'Submit' | localize }}
+            </button>
+        </div>
+    </form>
+</div>

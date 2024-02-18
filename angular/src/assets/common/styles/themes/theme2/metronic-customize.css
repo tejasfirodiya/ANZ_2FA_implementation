@@ -1,0 +1,60 @@
+body:not(.account) {
+    background-size: 100% 350px;
+  }
+
+  body.dark-mode:not(.account) {
+    background-image: url(/assets/metronic/themes/theme2/images/bg/header-bg-dark.png);
+  }
+  
+  theme2-brand {
+    display: flex;
+    flex: 1;
+  }
+  
+  theme2-layout {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+  
+  #kt_wrapper > ng-component {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+  
+  .unread-notification-count {
+    position: absolute;
+    top: 5px;
+    left: 23px;
+  }
+  
+  .unread-chat-message-count {
+    position: absolute;
+    top: -6px;
+    left: 13px;
+  }
+  
+  .mobile-subscription-warning *{
+    color: #fff;
+  }menu-search-bar {
+    min-width: 100px !important;
+  }
+  
+  p-autoComplete{
+    padding: 10px;
+  }
+  
+  .menuSearchBarContainer{
+    width: calc(100% - 20px);
+  }
+  
+  @media (min-width: 992px){
+    body:not([data-kt-sticky-header=on]) .header .header-menu .menu > .menu-item > .menu-link .menu-icon, body:not([data-kt-sticky-header=on]) .header .header-menu .menu > .menu-item > .menu-link .menu-icon .svg-icon, body:not([data-kt-sticky-header=on]) .header .header-menu .menu > .menu-item > .menu-link .menu-icon i{
+      color: #fff !important;
+    }
+  }
+  
+  .drawer-overlay{
+    z-index: 1 !important;
+  }

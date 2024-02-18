@@ -1,0 +1,162 @@
+<div [@routerTransition]>
+    <sub-header [title]="'LoginAttempts' | localize" [description]="'LoginAttemptsHeaderInfo' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom">
+            <div class="card-body">
+                <div class="form">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-md-12">
+                            <div class="mb-5">
+                                <label for="LoginAttemptsFilter" class="control-label">
+                                    {{ 'Filter' | localize }}
+                                </label>
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        id="LoginAttemptsFilter"
+                                        [(ngModel)]="filter"
+                                        class="form-control"
+                                        [attr.placeholder]="l('SearchWithThreeDot')"
+                                        value=""
+                                    />
+                                    <span class="input-group-append">
+                                        <button
+                                            id="GetLoginAttemptsButton"
+                                            class="btn btn-primary"
+                                            (click)="getLoginAttempts()"
+                                        >
+                                            <i class="flaticon-search-1" [attr.aria-label]="l('Search')"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row align-items-center mb-4">
+                        <div class="col-md-6">
+                            <div class="mb-5">
+                                <label for="StartEndRange">{{ 'DateRange' | localize }}</label>
+                                <input
+                                    class="form-control"
+                                    id="StartEndRange"
+                                    name="StartEndRange"
+                                    #drp="bsDaterangepicker"
+                                    readonly="readonly"
+                                    bsDaterangepicker
+                                    dateRangePickerLuxonModifier
+                                    [(date)]="dateRange"
+                                />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-5">
+                                <label for="LoginResultFilter" class="control-label">
+                                    {{ 'Result' | localize }}
+                                </label>
+                                <login-result-type-combo [(ngModel)]="loginResultFilter"></login-result-type-combo>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12 text-end">
+                            <button name="RefreshButton" class="btn btn-primary" (click)="getLoginAttempts()">
+                                <i class="la la-refresh btn-md-icon"></i>
+                                <span class="d-none d-md-inline-block">
+                                    {{ 'Refresh' | localize }}
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="col primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                        <p-table
+                            #dataTable
+                            sortMode="multiple"
+                            (onLazyLoad)="getLoginAttempts($event)"
+                            [value]="primengTableHelper.records"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [tableStyle]="{'min-width': '50rem'}"
+                        >
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th pSortableColumn="clientIpAddress">
+                                        {{ 'IpAddress' | localize }}
+                                        <p-sortIcon field="clientIpAddress"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="clientName">
+                                        {{ 'Client' | localize }}
+                                        <p-sortIcon field="clientName"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="browserInfo">
+                                        {{ 'Browser' | localize }}
+                                        <p-sortIcon field="browserInfo"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="creationTime">
+                                        {{ 'Time' | localize }}
+                                        <p-sortIcon field="creationTime"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="result">
+                                        {{ 'Result' | localize }}
+                                        <p-sortIcon field="result"></p-sortIcon>
+                                    </th>
+                                </tr>
+                            </ng-template>
+
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td>
+                                        <span class="p-column-title">{{ 'IpAddress' | localize }}</span>
+                                        {{ record.clientIpAddress }}
+                                    </td>
+                                    <td>
+                                        <span class="p-column-title">{{ 'Client' | localize }}</span>
+                                        {{ record.clientName }}
+                                    </td>
+                                    <td>
+                                        <span class="p-column-title">{{ 'Browser' | localize }}</span>
+                                        {{ record.browserInfo }}
+                                    </td>
+                                    <td>
+                                        <span class="p-column-title">{{ 'Time' | localize }}</span>
+                                        {{ record.creationTime | luxonFormat: 'F' }}
+                                    </td>
+                                    <td>
+                                        <span class="p-column-title">{{ 'Result' | localize }}</span>
+                                        <span *ngIf="record.result === 'Success'" class="text-success">
+                                            {{ 'AbpLoginResultType_' + record.result | localize }}
+                                        </span>
+                                        <span *ngIf="record.result !== 'Success'" class="text-warning">
+                                            {{ 'AbpLoginResultType_' + record.result | localize }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{ 'NoData' | localize }}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getLoginAttempts($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount
+                                "
+                            ></p-paginator>
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

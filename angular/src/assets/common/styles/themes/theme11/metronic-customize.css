@@ -1,0 +1,14 @@
+@media (max-width: 991.98px){
+    .header .header-menu-container{
+        display: flex !important;
+        width: 0px !important;
+    }
+
+    #kt_header{
+        z-index: 99;
+    }
+}
+
+#kt_chat_contacts_header {
+    padding: 0 1rem !important;
+}

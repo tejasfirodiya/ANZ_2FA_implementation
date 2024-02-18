@@ -1,0 +1,36 @@
+#kt_quick_user_toggle span{
+  color: #888C9F;
+}
+
+#kt_quick_user_toggle:hover span{
+  color: #888C9F; 
+  color: #009EF7;
+}
+
+body.dark-mode .searchMenuContainerSelect2 .select2-selection {
+  background: #1e1e2d !important;
+  border-color: #8a8a91 !important;
+}
+.searchMenuContainerSelect2 .select2-selection {
+  background: #1e1e2d !important;
+  border-color: #8a8a91 !important;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+span.tenancy-name,
+span#HeaderCurrentUserName {
+  color: #888C9F;
+}
+
+.menuSearchBarContainer{
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.menuSearchBarContainer input{
+  background: #1e1e2d !important;
+  border-color: #8a8a91 !important;
+  color: #fff !important;
+  
+}

@@ -1,0 +1,281 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "abp-zero-template": {
+      "root": "",
+      "sourceRoot": "src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "allowedCommonJsDependencies": [
+              "@angularclass/hmr",
+              "rtl-detect",
+              "object-path",
+              "angular2-text-mask",
+              "angular2-counto",
+              "rxjs/internal/observable/throwError"
+            ],
+            "outputPath": "dist",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "tsConfig": "src/tsconfig.app.json",
+            "polyfills": "src/polyfills.ts",
+            "preserveSymlinks": true,
+            "assets": [
+              "src/assets",
+              "src/metronic",
+              "src/favicon.ico",
+              {
+                "glob": "abp.signalr-client.js",
+                "input": "node_modules/abp-web-resources/Abp/Framework/scripts/libs",
+                "output": "/assets/abp"
+              },
+              {
+                "glob": "**/*.*",
+                "input": "node_modules/primeng/resources/themes/mdc-light-indigo/",
+                "output": "assets/primeng/themes/mdc-light-indigo/"
+              },
+              {
+                "glob": "**/*.*",
+                "input": "node_modules/primeng/resources/themes/mdc-dark-indigo/",
+                "output": "assets/primeng/themes/mdc-dark-indigo/"
+              }
+            ],
+            "styles": [
+              "node_modules/animate.css/animate.min.css",
+              "node_modules/quill/dist/quill.core.css",
+              "node_modules/quill/dist/quill.snow.css",
+              "node_modules/famfamfam-flags/dist/sprite/famfamfam-flags.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/sweetalert2/dist/sweetalert2.css",
+              "node_modules/cookieconsent/build/cookieconsent.min.css",
+              "node_modules/ngx-spinner/animations/ball-clip-rotate.css",
+
+              "src/assets/primeng/file-upload/css/primeng.file-upload.css",
+              "src/assets/primeng/autocomplete/css/primeng.autocomplete.less",
+              "src/assets/primeng/tree/css/primeng.tree.css",
+              "src/assets/primeng/context-menu/css/primeng.context-menu.css",
+
+              "src/assets/fonts/fonts-inter.css",
+              "src/assets/metronic/common/fonts/keenthemes-icons/ki.css",
+
+              "src/assets/ngx-bootstrap/bs-datepicker.css",
+
+              "src/assets/metronic/vendors/global/vendors.bundle.css",
+
+              "src/app/shared/core.less",
+              "src/app/shared/layout/layout.less",
+              "src/styles.css"
+            ],
+            "scripts": [
+              "node_modules/@microsoft/signalr/dist/browser/signalr.min.js",
+              "node_modules/localforage/dist/localforage.js",
+
+              "node_modules/push.js/bin/push.js",
+              "node_modules/quill/dist/quill.js",
+              "node_modules/sweetalert2/dist/sweetalert2.js",
+              "node_modules/cookieconsent/build/cookieconsent.min.js",
+
+              "src/assets/abp-web-resources/abp.js",
+              "src/assets/abp-web-resources/abp.sweet-alert.js",
+              "src/assets/abp-web-resources/abp.notify.js",
+              "src/assets/canvas-toBlob/canvas-toBlob.js",
+
+              "src/assets/metronic/vendors/global/vendors.bundle.js",
+
+              "src/assets/metronic/common/js/components/menu.js",
+              "src/assets/metronic/common/js/components/offcanvas.js",
+              "src/assets/metronic/common/js/components/header.js",
+              "src/assets/metronic/common/js/components/scrolltop.js",
+              "src/assets/metronic/common/js/components/toggle.js",
+              "src/assets/metronic/common/js/components/util.js"
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
+          },
+          "configurations": {
+            "hmr": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.hmr.ts"
+                }
+              ]
+            },
+            "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "k8s": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.k8s.ts"
+                }
+              ]
+            }
+          },
+          "defaultConfiguration": ""
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "abp-zero-template:build"
+          },
+          "configurations": {
+            "hmr": {
+              "browserTarget": "abp-zero-template:build:hmr"
+            },
+            "production": {
+              "browserTarget": "abp-zero-template:build:production"
+            },
+            "k8s": {
+              "browserTarget": "abp-zero-template:build:k8s"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "abp-zero-template:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "src/tsconfig.spec.json",
+            "main": "src/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/polyfills.ts",
+            "styles": [
+              "node_modules/animate.css/animate.min.css",
+              "node_modules/quill/dist/quill.core.css",
+              "node_modules/quill/dist/quill.snow.css",
+              "node_modules/famfamfam-flags/dist/sprite/famfamfam-flags.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/sweetalert2/dist/sweetalert2.css",
+              "node_modules/cookieconsent/build/cookieconsent.min.css",
+              "node_modules/ngx-spinner/animations/ball-clip-rotate.css",
+
+              "src/assets/primeng/file-upload/css/primeng.file-upload.css",
+              "src/assets/primeng/autocomplete/css/primeng.autocomplete.less",
+              "src/assets/primeng/tree/css/primeng.tree.css",
+              "src/assets/primeng/context-menu/css/primeng.context-menu.css",
+
+              "src/assets/fonts/fonts-inter.css",
+              "src/assets/metronic/common/fonts/keenthemes-icons/ki.css",
+
+              "src/assets/ngx-bootstrap/bs-datepicker.css",
+
+              "src/assets/metronic/vendors/global/vendors.bundle.css",
+
+              "src/app/shared/core.less",
+              "src/app/shared/layout/layout.less",
+              "src/styles.css"
+            ],
+            "scripts": [
+              "node_modules/@microsoft/signalr/dist/browser/signalr.min.js",
+              "node_modules/localforage/dist/localforage.js",
+
+              "node_modules/push.js/bin/push.js",
+              "node_modules/quill/dist/quill.js",
+              "node_modules/sweetalert2/dist/sweetalert2.js",
+              "node_modules/cookieconsent/build/cookieconsent.min.js",
+
+              "src/assets/abp-web-resources/abp.js",
+              "src/assets/abp-web-resources/abp.sweet-alert.js",
+              "src/assets/abp-web-resources/abp.notify.js",
+              "src/assets/canvas-toBlob/canvas-toBlob.js",
+
+              "src/assets/metronic/vendors/global/vendors.bundle.js",
+
+              "src/assets/metronic/common/js/components/menu.js",
+              "src/assets/metronic/common/js/components/offcanvas.js",
+              "src/assets/metronic/common/js/components/header.js",
+              "src/assets/metronic/common/js/components/scrolltop.js",
+              "src/assets/metronic/common/js/components/toggle.js",
+              "src/assets/metronic/common/js/components/util.js"
+            ],
+            "assets": [
+              "src/assets",
+              "src/favicon.ico",
+              {
+                "glob": "abp.signalr-client.js",
+                "input": "node_modules/abp-web-resources/Abp/Framework/scripts/libs",
+                "output": "/assets/abp"
+              },
+              {
+                "glob": "**/*.*",
+                "input": "node_modules/primeng/resources/themes/mdc-light-indigo/",
+                "output": "assets/primeng/themes/mdc-light-indigo/"
+              },
+              {
+                "glob": "**/*.*",
+                "input": "node_modules/primeng/resources/themes/mdc-dark-indigo/",
+                "output": "assets/primeng/themes/mdc-dark-indigo/"
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "prefix": "app",
+      "style": "css"
+    },
+    "@schematics/angular:directive": {
+      "prefix": "app"
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
+}

@@ -1,0 +1,174 @@
+<div [@routerTransition]>
+    <sub-header [title]="'MassNotifications' | localize">
+        <div role="actions">
+            <button
+                *ngIf="isGranted('Pages.Administration.MassNotification')"
+                (click)="createMassNotification()"
+                class="btn btn-secondary"
+            >
+                <i class="fa fa-plus"></i>
+                {{ l('CreateNewMassNotification') }}
+            </button>
+
+            <button (click)="getPublishedNotifications()" class="btn btn-primary blue">
+                <i class="la la-refresh"></i>
+                {{ l('Refresh') }}
+            </button>
+        </div>
+    </sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-body">
+                <form class="form mb-10" autocomplete="off">
+                    <div>
+                        <div class="row align-items-center">
+                            <div class="col-xl-12">
+                                <input
+                                    class="form-control"
+                                    id="StartEndRange"
+                                    name="StartEndRange"
+                                    #drp="bsDaterangepicker"
+                                    readonly="readonly"
+                                    bsDaterangepicker
+                                    dateRangePickerLuxonModifier
+                                    [(date)]="dateRange"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-Datatable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                        <p-table
+                            #dataTable
+                            (onLazyLoad)="getPublishedNotifications($event)"
+                            [value]="primengTableHelper.records"
+                            rows="{{ primengTableHelper.defaultRecordsCountPerPage }}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [scrollable]="true"
+                            ScrollWidth="100%"
+                            [tableStyle]="{'min-width': '50rem'}"
+                            [resizableColumns]="primengTableHelper.resizableColumns"
+                        >
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="min-width: 250px">
+                                        {{ l('Message') }}
+                                    </th>
+                                    <th style="max-width: 150px">
+                                        {{ l('Severity') }}
+                                    </th>
+                                    <th style="max-width: 250px">
+                                        {{ l('LastModificationTime') }}
+                                    </th>
+                                    <th style="max-width: 150px">
+                                        {{ l('IsPublished') }}
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit" let-i="rowIndex">
+                                <tr>
+                                    <td style="min-width: 250px">
+                                        <span class="p-column-title">{{ l('Name') }}</span>
+                                        <span *ngIf="!isHTMLMessage(record.data)">
+                                            {{ getMessageDataString(record.data) }}
+                                        </span>
+                                        <button
+                                            *ngIf="
+                                                shouldAddMessageDetailButton(record.data) && isHTMLMessage(record.data)
+                                            "
+                                            class="btn btn-secondary btn-sm"
+                                            (click)="showMessageDetailModal(record.data)"
+                                        >
+                                            {{ 'ShowHTMLData' | localize }}
+                                        </button>
+                                        <button
+                                            *ngIf="
+                                                shouldAddMessageDetailButton(record.data) && !isHTMLMessage(record.data)
+                                            "
+                                            class="btn btn-secondary btn-sm"
+                                            (click)="showMessageDetailModal(record.data)"
+                                        >
+                                            {{ 'ShowData' | localize }}
+                                        </button>
+                                    </td>
+                                    <td style="max-width: 150px">
+                                        <span class="p-column-title">{{ l('Severity') }}</span>
+                                        <span [class]="getSeverityClass(record.severity)">
+                                            {{ l(notificationSeverity[record.severity]) }}
+                                        </span>
+                                    </td>
+                                    <td style="max-width: 250px">
+                                        <span class="p-column-title">{{ l('LastModificationTime') }}</span>
+                                        {{ record.creationTime | luxonFormat: 'F' }}
+                                    </td>
+                                    <td style="max-width: 150px">
+                                        <span class="p-column-title">{{ l('IsPublished') }}</span>
+                                        <span class="badge badge-success" *ngIf="record.isPublished">
+                                            {{ 'Yes' | localize }}
+                                        </span>
+                                        <span class="badge badge-dark" *ngIf="!record.isPublished">
+                                            {{ 'No' | localize }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{ l('NoData') }}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator
+                                [rows]="primengTableHelper.defaultRecordsCountPerPage"
+                                #paginator
+                                (onPageChange)="getPublishedNotifications($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage"
+                                [showCurrentPageReport]="true"
+                                [currentPageReportTemplate]="
+                                    'TotalRecordsCount' | localize: primengTableHelper.totalRecordsCount
+                                "
+                            ></p-paginator>
+                        </div>
+                    </div>
+                    <!--<Primeng-Datatable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<create-mass-notification-modal
+    #createMassNotificationModalComponent
+    (modalSave)="getPublishedNotifications()"
+></create-mass-notification-modal>
+
+<div
+    bsModal
+    #messageDetailModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="messageDetailModal"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    {{ 'Message' | localize }}
+                </h4>
+                <button
+                    type="button"
+                    class="btn-close"
+                    (click)="closeMessageDetailModal()"
+                    [attr.aria-label]="l('Close')"
+                ></button>
+            </div>
+            <div class="modal-body" [innerHTML]="messageDetailString"></div>
+        </div>
+    </div>
+</div>

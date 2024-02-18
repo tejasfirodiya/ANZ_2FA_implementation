@@ -1,0 +1,233 @@
+<div
+    appBsModal
+    #enableTwoFactorAuthenticationModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myLargeModalLabel"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <span>{{ 'TwoFactorAuthentication' | localize }}</span>
+                </h5>
+                <button type="button" class="btn-close" [attr.aria-label]="l('Close')" (click)="close()"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <!--begin::Stepper-->
+                    <div
+                        class="stepper stepper-pills stepper-column d-flex flex-column flex-lg-row"
+                        id="2fa_stepper"
+                    >
+                        <!--begin::Aside-->
+                        <div class="d-flex flex-row-auto w-100 w-lg-300px">
+                            <!--begin::Nav-->
+                            <div class="stepper-nav flex-start">
+                                <!--begin::Step 1-->
+                                <div class="stepper-item current me-5" data-kt-stepper-element="nav">
+                                    <!--begin::Wrapper-->
+                                    <div class="stepper-wrapper d-flex align-items-center">
+                                        <!--begin::Icon-->
+                                        <div class="stepper-icon w-40px h-40px">
+                                            <i class="stepper-check fas fa-check"></i>
+                                            <span class="stepper-number">1</span>
+                                        </div>
+                                        <!--end::Icon-->
+
+                                        <!--begin::Label-->
+                                        <div class="stepper-label">
+                                            <h3 class="stepper-title">{{ 'AuthenticatorAppTitle' | localize }}</h3>
+                                        </div>
+                                        <!--end::Label-->
+                                    </div>
+                                    <!--end::Wrapper-->
+
+                                    <!--begin::Line-->
+                                    <div class="stepper-line h-40px"></div>
+                                    <!--end::Line-->
+                                </div>
+                                <!--end::Step 1-->
+
+                                <!--begin::Step 2-->
+                                <div class="stepper-item me-5" data-kt-stepper-element="nav">
+                                    <!--begin::Wrapper-->
+                                    <div class="stepper-wrapper d-flex align-items-center">
+                                        <!--begin::Icon-->
+                                        <div class="stepper-icon w-40px h-40px">
+                                            <i class="stepper-check fas fa-check"></i>
+                                            <span class="stepper-number">2</span>
+                                        </div>
+                                        <!--begin::Icon-->
+
+                                        <!--begin::Label-->
+                                        <div class="stepper-label">
+                                            <h3 class="stepper-title">{{ 'SaveRecoveryCodesTitle' | localize }}</h3>
+                                        </div>
+                                        <!--end::Label-->
+                                    </div>
+                                    <!--end::Wrapper-->
+
+                                    <!--begin::Line-->
+                                    <div class="stepper-line h-40px"></div>
+                                    <!--end::Line-->
+                                </div>
+                                <!--end::Step 2-->
+
+                                <!--begin::Step 3-->
+                                <div class="stepper-item me-5" data-kt-stepper-element="nav">
+                                    <!--begin::Wrapper-->
+                                    <div class="stepper-wrapper d-flex align-items-center">
+                                        <!--begin::Icon-->
+                                        <div class="stepper-icon w-40px h-40px">
+                                            <i class="stepper-check fas fa-check completed-check"></i>
+                                        </div>
+                                        <!--begin::Icon-->
+
+                                        <!--begin::Label-->
+                                        <div class="stepper-label">
+                                            <h3 class="stepper-title">{{ 'AuthenticatorAppEnabled' | localize }}</h3>
+                                        </div>
+                                        <!--end::Label-->
+                                    </div>
+                                    <!--end::Wrapper-->
+                                </div>
+                                <!--end::Step 3-->
+                            </div>
+                            <!--end::Nav-->
+                        </div>
+
+                        <!--begin::Content-->
+                        <div class="flex-row-fluid">
+                            <!--begin::Form-->
+                            <form class="form mx-auto" novalidate="novalidate" name="AuthenticationForm">
+                                <!--begin::Group-->
+                                <div class="mb-5">
+                                    <!--begin::Step 1-->
+                                    <div class="flex-column current" data-kt-stepper-element="content">
+                                        <div class="google-authenticator-enable">
+                                            <div class="text-center mb-">
+                                                <input
+                                                    type="hidden"
+                                                    name="GoogleAuthenticatorKey"
+                                                    [(ngModel)]="model.googleAuthenticatorKey"
+                                                />
+                                                <img [src]="model.qrCodeSetupImageUrl" alt="qr-code" />
+                                            </div>
+                                            <div class="col-md-8 mx-auto">
+                                                <div class="text-bold text-center">
+                                                    {{ 'AuthenticatorAppScan' | localize }}
+                                                </div>
+                                                <small>{{ 'AuthenticatorAppScanHelp' | localize }}</small>
+                                                <input
+                                                    maxlength="6"
+                                                    (keyup)="onAuthenticatorCodeInput($event)"
+                                                    id="authenticationCode"
+                                                    class="form-control form-control-sm mt-5"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--begin::Step 1-->
+
+                                    <div class="flex-column" data-kt-stepper-element="content">
+                                        <div class="card">
+                                            <div class="card-body pt-0">
+                                                <recoveryCodesComponent
+                                                    #recoveryCodesComponent
+                                                ></recoveryCodesComponent>
+                                                <div class="mt-4 text-end">
+                                                    <button
+                                                        (click)="
+                                                            downloadRecoveryCodes(
+                                                                recoveryCodesComponent.model.recoveryCodes
+                                                            )
+                                                        "
+                                                        id="btnDownload"
+                                                        type="button"
+                                                        class="btn btn-primary btn-sm me-1"
+                                                    >
+                                                        <i class="fa-solid fa-download"></i>
+                                                        <span>{{ 'Download' | localize }}</span>
+                                                    </button>
+                                                    <button
+                                                        (click)="
+                                                            copyRecoveryCodes(
+                                                                recoveryCodesComponent.model.recoveryCodes
+                                                            )
+                                                        "
+                                                        id="btnCopy"
+                                                        type="button"
+                                                        class="btn btn-secondary btn-sm"
+                                                    >
+                                                        <i class="fa-solid fa-copy"></i>
+                                                        <span>{{ 'Copy' | localize }}</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--begin::Step 1-->
+                                    <div class="flex-column" data-kt-stepper-element="content">
+                                        <div class="alert alert-success" role="alert">
+                                            <div class="text-center mb-5">
+                                                <i class="bi bi-shield-check display-6 text-success"></i>
+                                            </div>
+                                            <div class="text-dark">
+                                                <h4 class="alert-heading text-center">
+                                                    {{ 'AuthenticatorAppEnabled' | localize }}
+                                                </h4>
+                                                {{ 'AuthenticatorAppEnabledHelp' | localize }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--begin::Step 1-->
+                                </div>
+                                <!--end::Group-->
+
+                                <!--begin::Actions-->
+                                <div class="d-flex flex-stack justify-content-end">
+                                    <!--begin::Wrapper-->
+                                    <div>
+                                        <button
+                                            type="button"
+                                            id="btnContinue"
+                                            disabled
+                                            class="btn btn-primary btn-sm"
+                                            data-kt-stepper-action="next"
+                                        >
+                                            <span class="indicator-label">{{ 'Continue' | localize }}</span>
+                                            <span class="indicator-progress">
+                                                {{ 'PleaseWait' | localize }}
+                                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                            </span>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            class="btn btn-success btn-sm"
+                                            data-bs-dismiss="modal"
+                                            data-kt-stepper-action="submit"
+                                            aria-hidden="true"
+                                            (click)="close()"
+                                        >
+                                            {{ 'Done' | localize }}
+                                        </button>
+                                    </div>
+                                    <!--end::Wrapper-->
+                                </div>
+                                <!--end::Actions-->
+                            </form>
+                            <!--end::Form-->
+                        </div>
+                    </div>
+                    <!--end::Stepper-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

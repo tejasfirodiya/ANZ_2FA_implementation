@@ -1,0 +1,22 @@
+body.dark-mode .p-datatable .p-datatable-tbody > tr > td,
+body.dark-mode .p-datatable .p-datatable-thead > tr > th,
+body.dark-mode .p-paginator,
+body.dark-mode .p-dropdown,
+body.dark-mode .p-dropdown-panel{
+    background-color: #1e1e2d;       
+   }
+
+   body.dark-mode .p-datatable .p-datatable-tbody > tr > td{
+    border-bottom: 1px dashed #2b2b40;
+   }
+
+   .p-datatable .p-datatable-tbody > tr > td,
+   .p-datatable .p-datatable-thead > tr > th{
+     border-bottom: 1px dashed #e4e4e4;
+   }
+
+   .primeng-no-data{
+      text-align: center;
+      margin-top: 10px;
+      margin-bottom: 10px;
+   }

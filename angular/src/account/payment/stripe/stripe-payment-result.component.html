@@ -1,0 +1,14 @@
+<div class="d-flex h-100 align-items-center" style="padding-bottom: 150px !important">
+    <div class="login-form align-items-center w-100 m-0">
+        <div class="pb-13 pt-lg-0 pt-5">
+            <h3 class="fw-bolder text-dark text-center fs-h4 fs-h1-lg">
+                {{ 'PleaseWait' | localize }}
+            </h3>
+            <p class="text-center">{{ 'ReceivingPaymentResult' | localize }} {{ 'PleaseWait' | localize }}</p>
+        </div>
+        <div style="position: relative; margin-top: 60px !important">
+            &emsp;
+            <div [busyIf]="true"></div>
+        </div>
+    </div>
+</div>

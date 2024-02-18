@@ -1,0 +1,56 @@
+:host ::ng-deep #externalLoginSettings .tab-content{
+    width: 100% !important;
+}
+
+.upload-logo-dark{
+    background-color: #1e1e2d;
+    color: #fff;
+    border-color: #1e1e2d;
+}
+
+.upload-logo-dark h6{
+    color: #fff;
+}
+
+.upload-logo-light{
+    background-color: #fff;
+    color: #2c3e50;
+    border-color: #fff;
+}
+
+.upload-logo-light h6{
+    color: #2c3e50;
+}
+
+@media (max-width: 767px) {
+    #SettingsAppearanceTab .upload-logo{
+        margin-bottom:15px;
+    }
+
+    .m-form .col-md-6:first-child{
+        margin-bottom: 15px;
+    }
+}
+
+.fileinput-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.fileinput-button input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    height: 100%;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    font-size: 200px !important;
+    direction: ltr;
+    cursor: pointer;
+}

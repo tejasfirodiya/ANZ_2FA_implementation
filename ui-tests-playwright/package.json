@@ -1,0 +1,16 @@
+{
+  "name": "ui-tests-playwright",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.31.2"
+  },
+  "scripts": {
+    "test" : "npx playwright test",
+    "test:snapshot" : "npx playwright test --update-snapshots"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3"
+  }
+}

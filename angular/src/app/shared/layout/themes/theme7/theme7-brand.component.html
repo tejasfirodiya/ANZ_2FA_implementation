@@ -1,0 +1,15 @@
+<a href="/">
+    <img *ngIf="!appSession.tenant || !appSession.tenant.HasLogo()" [src]="defaultLogo" alt="logo" [class]="imageClass" />
+    <img
+        *ngIf="appSession.tenant && appSession.tenant.HasLogo()"
+        [src]="
+            remoteServiceBaseUrl +
+            '/TenantCustomization/GetTenantLogo?skin=' +
+            skin +
+            '&tenantId=' +
+            appSession.tenant.id 
+        "
+        alt="logo"
+        [class]="imageClass"
+    />
+</a>

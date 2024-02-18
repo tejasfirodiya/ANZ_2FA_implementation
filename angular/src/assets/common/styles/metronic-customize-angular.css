@@ -1,0 +1,25 @@
+﻿app-root {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+app-root>ng-component {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.cc-window {
+  background-color: #282a3a;
+}
+
+.cc-btn {
+  background-color: #5867dd;
+  border-color: #5867dd;
+  color: #ffffff;
+}
+
+.cc-message {
+  color: #fefefe;
+}

@@ -1,0 +1,44 @@
+<div class="login-form" [@routerTransition]>
+    <h4>{{ 'SuccessfullyRegistered' | localize }}</h4>
+
+    <ul>
+        <li>
+            <span class="text-muted">{{ 'TenancyName' | localize }}:</span>
+            {{ model.tenancyName }}
+        </li>
+        <li>
+            <span class="text-muted">{{ 'TenantName' | localize }}:</span>
+            {{ model.name }}
+        </li>
+        <li>
+            <span class="text-muted">{{ 'UserName' | localize }}:</span>
+            {{ model.userName }}
+        </li>
+        <li>
+            <span class="text-muted">{{ 'EmailAddress' | localize }}:</span>
+            {{ model.emailAddress }}
+        </li>
+    </ul>
+
+    <div>
+        <div *ngIf="model.isEmailConfirmationRequired" class="alert alert-warning" role="alert">
+            {{ 'ConfirmationMailSentPleaseClickLinkInTheEmail' | localize: model.emailAddress }}
+        </div>
+
+        <div *ngIf="!model.isActive" class="alert alert-warning" role="alert">
+            {{ 'YourAccountIsWaitingToBeActivatedByAdmin' | localize }}
+        </div>
+
+        <a href="{{ tenantUrl }}" *ngIf="tenantUrl">
+            <button type="button" class="btn btn-light-primary fw-bolder fs-h6 px-8 py-4 my-3">
+                ← {{ 'TenantRegistrationLoginInfo' | localize }}
+            </button>
+        </a>
+
+        <a href="/" *ngIf="!tenantUrl">
+            <button type="button" class="btn btn-light-primary fw-bolder fs-h6 px-8 py-4 my-3">
+                ← {{ 'GoToLoginPage' | localize }}
+            </button>
+        </a>
+    </div>
+</div>

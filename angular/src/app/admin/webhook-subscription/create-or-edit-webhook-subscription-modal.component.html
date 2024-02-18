@@ -1,0 +1,96 @@
+<div
+    bsModal
+    #createOrEditModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createOrEditModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div *ngIf="active">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="webhookSubscriptionId">{{ 'EditWebhookSubscription' | localize }}</span>
+                        <span *ngIf="!webhookSubscriptionId">{{ 'AddNewWebhookSubscription' | localize }}</span>
+                    </h4>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        (click)="close()"
+                        [attr.aria-label]="l('Close')"
+                        [disabled]="saving"
+                    >
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-5 col-12">
+                        <div class="mb-5">
+                            <label class="form-label" for="Name">{{ 'WebhookEndpoint' | localize }} *</label>
+                            <input
+                                id="WebhookEndpointURL"
+                                #endPointUrl="ngModel"
+                                class="form-control"
+                                type="text"
+                                placeholder="https://example.com/postreceive"
+                                name="Name"
+                                [(ngModel)]="webhookSubscription.webhookUri"
+                                required
+                                pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"
+                            />
+                            <validation-messages [formCtrl]="endPointUrl"></validation-messages>
+                        </div>
+                        <div class="mb-5">
+                            <label class="form-label" for="Name">{{ 'WebhookEvents' | localize }} *</label>
+                            <p-autoComplete
+                                [(ngModel)]="webhooks"
+                                [suggestions]="filteredWebhooks"
+                                (completeMethod)="filterWebhooks($event)"
+                                field="name"
+                                [minLength]="1"
+                                name="MultiSelectInput"
+                                id="MultiSelectInput"
+                                [multiple]="true"
+                                inputStyleClass="form-control"
+                                styleClass="width-percent-100"
+                            ></p-autoComplete>
+                        </div>
+                        <div class="mb-2">
+                            <key-value-list-manager
+                                #headerKeyValueManager
+                                [header]="l('AdditionalWebhookHeaders')"
+                                [keyPlaceHolder]="l('HeaderKey')"
+                                [valuePlaceHolder]="l('HeaderValue')"
+                                [items]="headers"
+                            ></key-value-list-manager>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        [disabled]="saving"
+                        type="button"
+                        class="btn btn-light-primary fw-bold"
+                        (click)="close()"
+                    >
+                        {{ 'Cancel' | localize }}
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn btn-primary fw-bold"
+                        (click)="save()"
+                        [disabled]="!webhookSubscription.webhookUri || !webhooks || webhooks.length == 0"
+                        [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"
+                    >
+                        <i class="fa fa-save"></i>
+                        <span>{{ 'Save' | localize }}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

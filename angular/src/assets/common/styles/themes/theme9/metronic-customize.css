@@ -1,0 +1,19 @@
+.menuSearchBarContainer{
+  width: calc(100% - 20px);
+}
+
+@media (max-width: 991px) {
+  .subheader{
+    padding-bottom: 20px;
+    margin-top: 10px;
+    background-color: #2C294B;
+  }
+
+  body.dark-mode .subheader{
+    background-color: #0f0f18;
+  }
+
+  side-bar-menu .menu{
+    padding-top: 50px;
+  }
+}

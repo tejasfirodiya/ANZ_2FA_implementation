@@ -1,0 +1,362 @@
+<div
+    id="kt_drawer_chat"
+    class="bg-body drawer drawer-end"
+    data-kt-drawer="true"
+    data-kt-drawer-name="chat"
+    data-kt-drawer-activate="true"
+    data-kt-drawer-overlay="true"
+    data-kt-drawer-width="{default:'300px', 'md': '500px'}"
+    data-kt-drawer-direction="end"
+    data-kt-drawer-toggle="#kt_drawer_chat_toggle"
+    data-kt-drawer-close="#kt_drawer_chat_close"
+>
+    <!-- BEGIN FRIENDS -->
+    <div class="card card-flush w-100" id="kt_drawer_chat_friends" [hidden]="selectedUser.friendUserId != null">
+        <div class="card-header pt-7" id="kt_chat_contacts_header">
+            <div class="card-title">
+                <form class="w-100 position-relative" autocomplete="off">
+                    <span
+                        class="
+                            svg-icon svg-icon-2 svg-icon-lg-1 svg-icon-gray-500
+                            position-absolute
+                            top-50
+                            ms-5
+                            translate-middle-y
+                        "
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <rect
+                                opacity="0.5"
+                                x="17.0365"
+                                y="15.1223"
+                                width="8.15546"
+                                height="2"
+                                rx="1"
+                                transform="rotate(45 17.0365 15.1223)"
+                                fill="black"
+                            ></rect>
+                            <path
+                                d="M11 19C6.55556 19 3 15.4444 3 11C3 6.55556 6.55556 3 11 3C15.4444 3 19 6.55556 19 11C19 15.4444 15.4444 19 11 19ZM11 5C7.53333 5 5 7.53333 5 11C5 14.4667 7.53333 17 11 17C14.4667 17 17 14.4667 17 11C17 7.53333 14.4667 5 11 5Z"
+                                fill="black"
+                            ></path>
+                        </svg>
+                    </span>
+                    <input
+                        type="text"
+                        id="ChatUserSearchUserName"
+                        class="form-control form-control-solid px-15 h-25px h-lg-40px"
+                        name="search"
+                        value=""
+                        placeholder="{{ 'Filter' | localize }}"
+                        [(ngModel)]="userNameFilter"
+                    />
+                </form>
+            </div>
+            <div class="card-toolbar justify-content-end">
+                <a
+                    href="javascript:;"
+                    id="SearchChatUserButton"
+                    (click)="openSearchModal()"
+                    class="btn w-25px w-lg-40px h-25px h-lg-40px btn-icon btn-light btn-hover-primary"
+                    [tooltip]="l('AddFriend')"
+                    [attr.title]="l('AddFriend')"
+                >
+                    <i class="fas fa-user-plus"></i>
+                </a>
+                <a
+                    href="javascript:;"
+                    (click)="reversePinned()"
+                    class="btn w-25px w-lg-40px h-25px h-lg-40px btn-icon btn-light btn-hover-primary page-quick-sidebar-pinner"
+                >
+                    <i class="fa fa-map-pin" [ngClass]="{ 'fa-rotate-90': !pinned }" aria-label="l('Pin')"></i>
+                </a>
+                <a
+                    href="#"
+                    class="btn w-25px w-lg-40px h-25px h-lg-40px btn-icon btn-light btn-hover-primary"
+                    id="kt_drawer_chat_close"
+                >
+                    <i class="flaticon2-delete"></i>
+                </a>
+            </div>
+        </div>
+        <div class="card-body pt-5" id="kt_chat_contacts_body">
+            <div
+                class="scroll-y pe-5 h-200px h-lg-auto chat-users"
+                data-kt-scroll="true"
+                data-kt-scroll-activate="{default: false, lg: true}"
+                data-kt-scroll-max-height="auto"
+                data-kt-scroll-dependencies="#kt_header, #kt_toolbar, #kt_footer, #kt_chat_contacts_header"
+                data-kt-scroll-wrappers="#kt_content, #kt_chat_contacts_body"
+                data-kt-scroll-offset="0px"
+            >
+                <!--BEGIN FRIEND LIST-->
+                <div
+                    class="d-flex flex-stack py-4 chat-user"
+                    *ngFor="let friend of getFilteredFriends(friendDtoState.Accepted, userNameFilter)"
+                >
+                    <chat-friend-list-item
+                        class="d-flex flex-stack w-100"
+                        [friend]="friend"
+                        (selectChatFriend)="selectFriend(friend)"
+                    ></chat-friend-list-item>
+                </div>
+                <!-- END FRIEND LIST-->
+                <p id="EmptyFriendListInfo" *ngIf="getFilteredFriendsCount(friendDtoState.Accepted) == 0">
+                    {{ 'YouDontHaveAnyFriend' | localize }}
+                </p>
+            </div>
+            <div class="mt-20">
+                <h5>
+                    {{ 'BlockedUsers' | localize }}
+                </h5>
+                <div
+                    data-kt-scroll="true"
+                    data-kt-scroll-activate="{default: false, lg: true}"
+                    data-kt-scroll-max-height="auto"
+                    data-kt-scroll-dependencies="#kt_header, #kt_toolbar, #kt_footer, #kt_chat_contacts_header"
+                    data-kt-scroll-wrappers="#kt_content, #kt_chat_contacts_body"
+                    data-kt-scroll-offset="0px"
+                    class="scroll-y me-n5 pe-5 h-200px h-lg-auto chat-users"
+                >
+                    <div *ngFor="let friend of getFilteredFriends(friendDtoState.Blocked, userNameFilter)">
+                        <chat-friend-list-item
+                            [friend]="friend"
+                            (selectChatFriend)="selectFriend(friend)"
+                        ></chat-friend-list-item>
+                    </div>
+                    <p id="EmptyBlockedFriendListInfo" *ngIf="getFilteredFriendsCount(friendDtoState.Blocked) == 0">
+                        {{ 'YouDontHaveAnyBlockedFriend' | localize }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END FRIENDS -->
+    <!-- BEGIN MESSAGES -->
+    <div
+        class="card w-100 rounded-0 border-0"
+        id="kt_drawer_chat_messenger"
+        [hidden]="selectedUser.friendUserId == null"
+    >
+        <div class="card-header pe-5" id="kt_drawer_chat_messenger_header">
+            <div class="card-title">
+                <div class="d-flex justify-content-center flex-column me-3">
+                    <a
+                        href="#"
+                        id="selectedChatUserName"
+                        class="fs-4 fw-bolder text-gray-900 text-hover-primary me-1 mb-2 lh-1"
+                    >
+                        {{ getShownUserName(selectedUser.friendTenancyName, selectedUser.friendUserName) }}
+                    </a>
+                    <div class="mb-0 lh-1" id="selectedChatUserStatus">
+                        <span
+                            *ngIf="selectedUser.isOnline"
+                            class="badge badge-success badge-circle w-10px h-10px me-1"
+                        ></span>
+                        <span *ngIf="selectedUser.isOnline" class="fs-7 fw-bold text-muted">
+                            {{ 'Online' | localize }}
+                        </span>
+                        <span
+                            *ngIf="!selectedUser.isOnline"
+                            class="badge badge-secondary badge-circle w-10px h-10px me-1"
+                        ></span>
+                        <span *ngIf="!selectedUser.isOnline" class="fs-7 fw-bold text-muted">
+                            {{ 'Offline' | localize }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-toolbar">
+                <a
+                    href="javascript:;"
+                    (click)="quickSideBarBackClick()"
+                    [hidden]="!selectedUser.friendUserId"
+                    id="kt_quick_sidebar_back"
+                    class="btn w-25px w-lg-40px h-25px h-lg-40px btn-icon btn-light btn-hover-primary quick-sidebar-back"
+                    [tooltip]="l('Back')"
+                >
+                    <i class="fa fa-arrow-alt-circle-left" aria-label="l('Back')"></i>
+                </a>
+                <a
+                    href="javascript:;"
+                    *ngIf="selectedUser.state == friendDtoState.Accepted"
+                    (click)="block(selectedUser)"
+                    id="liBanChatUser"
+                    class="btn w-25px w-lg-40px h-25px h-lg-40px btn-icon btn-light btn-hover-primary quick-sidebar-back"
+                    [tooltip]="l('BlockUser')"
+                >
+                    <i class="fa fa-ban" aria-label="l('BlockUser')"></i>
+                </a>
+                <a
+                    href="javascript:;"
+                    *ngIf="selectedUser.state == friendDtoState.Blocked"
+                    (click)="unblock(selectedUser)"
+                    id="liUnbanChatUser"
+                    class="btn w-25px w-lg-40px h-25px h-lg-40px btn-icon btn-light btn-hover-primary quick-sidebar-back"
+                    [tooltip]="l('UnblockUser')"
+                >
+                    <i class="fa fa-check" aria-label="l('UnblockUser')"></i>
+                </a>
+                <a
+                    href="javascript:;"
+                    (click)="remove(selectedUser)"
+                    id="removeFriend"
+                    class="btn w-25px w-lg-40px h-25px h-lg-40px btn-icon btn-light btn-hover-primary quick-sidebar-back"
+                    [tooltip]="l('RemoveFriend')"
+                >
+                    <i class="fas fa-minus-circle" aria-label="l('RemoveFriend')"></i>
+                </a>
+                <a
+                    href="javascript:;"
+                    class="btn w-25px w-lg-40px h-25px h-lg-40px btn-icon btn-light btn-hover-primary"
+                    id="kt_drawer_chat_close"
+                    [tooltip]="l('Close')"
+                >
+                    <i class="flaticon2-delete"></i>
+                </a>
+            </div>
+        </div>
+        <div class="card-body py-0">
+            <div
+                (scroll)="onScrollChatPanel($event)"
+                id="kt_drawer_chat_messenger_body"
+                class="scroll-y me-n5 pe-5 pt-5"
+                data-kt-element="#UserChatMessages"
+                data-kt-scroll="true"
+                data-kt-scroll-activate="true"
+                data-kt-scroll-height="100%"
+                data-kt-scroll-dependencies="#kt_drawer_chat_messenger_header, #kt_drawer_chat_messenger_footer"
+                data-kt-scroll-wrappers="#UserChatMessages"
+                data-kt-scroll-offset="0px"
+            >
+                <div class="messages" id="UserChatMessages">
+                    <div *ngFor="let chatMessage of selectedUser.messages">
+                        <!-- Begin Incoming Message -->
+                        <div *ngIf="chatMessage.side === 1" class="d-flex flex-column mb-5 align-items-start">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="symbol symbol-circle symbol-35px me-3">
+                                    <img alt="Pic" src="{{ profilePicture }}" />
+                                </div>
+                                <div>
+                                    <a href="#" class="fs-5 fw-bolder text-gray-900 text-hover-primary me-1">
+                                        {{ currentUser.userName }}
+                                    </a>
+                                    <time class="text-muted fs-7">
+                                        {{ getFixedMessageTime(chatMessage.creationTime) | luxonFromNow }}
+                                    </time>
+                                    <div class="d-inline" [innerHTML]="getReadStateHtml(chatMessage)"></div>
+                                </div>
+                            </div>
+                            <div class="p-5 rounded bg-light-info text-dark fw-bold mw-lg-400px text-start">
+                                <chat-message [message]="chatMessage"></chat-message>
+                            </div>
+                        </div>
+                        <!-- End Incoming Message -->
+                        <!-- Begin Outgoing Message-->
+                        <div *ngIf="chatMessage.side !== 1" class="d-flex flex-column mb-5 align-items-end">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="me-3">
+                                    <time class="text-muted fs-sm">
+                                        {{ getFixedMessageTime(chatMessage.creationTime) | luxonFromNow }}
+                                    </time>
+                                    <div class="d-inline" [innerHTML]="getReadStateHtml(chatMessage)"></div>
+                                    <a href="javascript:;" class="fs-5 fw-bolder text-gray-900 text-hover-primary me-1">
+                                        {{ selectedUser.friendUserName }}
+                                    </a>
+                                </div>
+                                <friend-profile-picture
+                                    class="symbol symbol-circle symbol-40 me-3"
+                                    [userId]="selectedUser.friendUserId"
+                                    [tenantId]="selectedUser.friendTenantId"
+                                ></friend-profile-picture>
+                            </div>
+                            <div class="p-5 rounded bg-light-primary text-dark fw-bold mw-lg-400px text-end">
+                                <chat-message [message]="chatMessage"></chat-message>
+                            </div>
+                        </div>
+                        <!-- End Outgoing Message-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer pt-4" id="kt_drawer_chat_messenger_footer">
+            <form name="chatMessageForm" id="chatMessageForm" role="form">
+                <textarea
+                    id="ChatMessage"
+                    #ChatMessage
+                    name="message"
+                    class="form-control form-control-flush mb-3"
+                    rows="2"
+                    placeholder="{{ 'TypeAMessageHere' | localize }}"
+                    [(ngModel)]="chatMessage"
+                    (keydown.Enter)="sendMessage($event)"
+                    [disabled]="selectedUser.state == friendDtoState.Blocked"
+                    maxlength="4096"
+                    required
+                ></textarea>
+                <div class="d-flex flex-stack">
+                    <div class="d-flex align-items-center me-2">
+                        <a href="javascript:;" class="btn btn-sm btn-icon btn-active-light-primary me-1 mb-3"
+                            data-toggle="tooltip" title="{{ 'File' | localize }}">
+                                <p-fileUpload
+                                    customUpload="true"
+                                    (uploadHandler)="uploadImage($event)"
+                                    id="chatImageUpload"
+                                    #chatImageUpload
+                                    name="ChatImageUpload"
+                                    maxFileSize="10000000"
+                                    auto="auto"
+                                    accept="image/*"
+                                    (onBeforeSend)="onBeforeSend($event)"
+                                    chooseIcon="fas fa-paperclip fs-3 icon-lg"
+                                    chooseLabel=" "
+                                ></p-fileUpload>
+
+                        </a>
+                        <a href="javascript:;" class="btn btn-sm btn-icon btn-active-light-primary me-1 mb-3"
+                            data-toggle="tooltip" title="{{ 'Image' | localize }}">
+                            <span class="fileinput-button">
+                                <p-fileUpload
+                                    customUpload="true"
+                                    (uploadHandler)="uploadFile($event)"
+                                    id="chatFileUpload"
+                                    #chatFileUpload
+                                    name="ChatFileUpload"
+                                    [url]="uploadUrl"
+                                    maxFileSize="10000000"
+                                    auto="auto"
+                                    (onBeforeSend)="onBeforeSend($event)"
+                                    chooseIcon="fas fa-camera-retro fs-3"
+                                    chooseLabel=" "
+                                ></p-fileUpload>
+                            </span>
+                        </a>
+                        <a
+                            href="javascript:;"
+                            class="btn btn-sm btn-icon btn-active-light-primary me-1"
+                            id="btnLinkShare"
+                            (click)="shareCurrentLink()"
+                            data-toggle="tooltip"
+                            title="{{ 'LinkToCurrentPage' | localize }}"
+                        >
+                            <span class="fileinput-button">
+                                <i
+                                    class="fas fa-link fs-3"
+                                ></i>
+                            </span>
+                        </a>
+                    </div>
+                    <button
+                        class="btn btn-primary"
+                        type="button"
+                        data-kt-element="send"
+                        id="SendChatMessageButton"
+                        (click)="sendMessage($event)"
+                    >
+                        {{ 'Reply' | localize }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

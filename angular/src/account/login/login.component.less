@@ -1,0 +1,23 @@
+.login__options {
+    a {
+        cursor: pointer;
+       
+        &.btn + .btn{
+            margin-left: 0 !important;
+        }
+
+        i.fa-openidconnect {
+            &::before{
+                content: "\f19b";
+            }
+        }
+
+        i.fa-wsfederation {
+            margin-right: 2px;
+
+            &::before{
+                content: "\f20e";
+            }
+        }
+    }
+}

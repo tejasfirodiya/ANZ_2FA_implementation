@@ -1,0 +1,83 @@
+<div
+    appBsModal
+    #addFromDifferentTenantModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myLargeModalLabel"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #AddFromDifferentTenantModalForm="ngForm" (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span>{{ 'AddFriendFromDifferentTenant' | localize }}</span>
+                    </h5>
+                    <button type="button" class="btn-close" [attr.aria-label]="l('Close')" (click)="close()"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-5" *ngIf="this.tenantToHostChatAllowed">
+                        <label class="col-4 form-label">{{ 'IsHostUser' | localize }}</label>
+                        <div class="col">
+                            <label class="form-check form-check-custom form-check-solid form-switch py-1">
+                                <input
+                                    type="checkbox"
+                                    name="IsHostUser"
+                                    [(ngModel)]="isHostUser"
+                                    class="form-check-input"
+                                    (change)="switchTenant()"
+                                    [disabled]="!tenantToTenantChatAllowed"
+                                />
+                            </label>
+                        </div>
+                    </div>
+                    <div *ngIf="!isHostUser && tenantToTenantChatAllowed" class="row mb-5">
+                        <label class="col-4 form-label">
+                            <label>{{ "TenancyName" | localize}}</label>
+                        </label>
+                        <label class="col form-label">
+                            <input
+                                class="form-control"
+                                type="text"
+                                id="TenancyName"
+                                name="TenancyName"
+                                [(ngModel)]="tenancyName"
+                                required
+                            />
+                        </label>
+                    </div>
+
+                    <div class="row mb-5">
+                        <label class="col-4 form-label">
+                            <label>{{"UserName" | localize}}</label>
+                        </label>
+                        <label class="col form-label">
+                            <input class="form-control"
+                                type="text"
+                                id="UserName"
+                                [(ngModel)]="userName"
+                                name="UserName"
+                                required>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                        {{ 'Close' | localize }}
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                        [disabled]="!AddFromDifferentTenantModalForm.form.valid || saving"
+                    >
+                        <i class="fa fa-save"></i>
+                        <span>{{ 'Save' | localize }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+<div [@routerTransition]>
+    <sub-header [title]="'DynamicEntityPropertyValues' | localize"></sub-header>
+
+    <div [class]="containerClass">
+        <div class="card card-custom gutter-b">
+            <div class="card-header align-items-center border-0">
+                <div class="float-left">
+                    <span class="fw-bold">{{ 'EntityFullName' | localize }}:</span>
+                    {{ entityFullName }}
+                </div>
+                <div class="float-end">
+                    <span class="fw-bold">{{ 'EntityRowId' | localize }}:</span>
+                    {{ entityId }}
+                </div>
+            </div>
+            <div class="card-body">
+                <dynamic-entity-property-value-manager
+                    #dynamicEntityPropertyValueManager
+                    [entityFullName]="entityFullName"
+                    [entityId]="entityId"
+                ></dynamic-entity-property-value-manager>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <button type="button" class="btn btn-success pull-right" (click)="saveAll()">
+                            {{ 'Save' | localize }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

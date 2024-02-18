@@ -1,0 +1,65 @@
+<div
+    appBsModal
+    #createModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static', keyboard: !saving }"
+>
+    <div class="modal-dialog modal-lg" *ngIf="initialized">
+        <div class="modal-content">
+            <div *ngIf="initialized">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>{{ 'AddNewDynamicEntityProperty' | localize }}</span>
+                    </h4>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        (click)="close()"
+                        [attr.aria-label]="l('Close')"
+                        [disabled]="saving"
+                    >
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-5 col-12">
+                        <div class="mb-5">
+                            <label class="form-label" for="Name">{{ 'Parameter' | localize }} *</label>
+                            <select class="form-select" [(ngModel)]="dynamicEntityProperty.dynamicPropertyId" required>
+                                <option value="">{{ 'SelectADynamicProperty' | localize }}</option>
+                                <option *ngFor="let parameter of allDynamicProperties" [value]="parameter.id">
+                                    {{ parameter.propertyName }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        [disabled]="saving"
+                        type="button"
+                        class="btn btn-light-primary fw-bold"
+                        (click)="close()"
+                    >
+                        {{ 'Cancel' | localize }}
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn btn-primary fw-bold"
+                        (click)="save()"
+                        [disabled]="!dynamicEntityProperty.entityFullName || !dynamicEntityProperty.dynamicPropertyId"
+                        [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"
+                    >
+                        <i class="fa fa-save"></i>
+                        <span>{{ 'Save' | localize }}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

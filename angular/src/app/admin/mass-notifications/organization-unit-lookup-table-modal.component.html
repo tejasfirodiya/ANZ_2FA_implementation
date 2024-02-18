@@ -1,0 +1,59 @@
+<div
+    appBsModal
+    (onShown)="onShown()"
+    #organizationUnitLookupTableModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="organizationUnitLookupTableModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{ l('SearchOrganizationUnit') }}</span>
+                </h4>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    (click)="close()"
+                    aria-label="Close"
+                    [disabled]="saving"
+                ></button>
+            </div>
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <organization-unit-tree
+                            [cascadeSelectEnabled]="false"
+                            #organizationUnitTree
+                        ></organization-unit-tree>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button
+                    [disabled]="saving"
+                    type="button"
+                    class="btn btn-light-primary font-weight-bold"
+                    (click)="close()"
+                >
+                    {{ 'Cancel' | localize }}
+                </button>
+                <button
+                    class="btn btn-primary font-weight-bold"
+                    (click)="save()"
+                    [buttonBusy]="saving"
+                    [busyText]="l('SavingWithThreeDot')"
+                >
+                    <i class="fa fa-save"></i>
+                    <span>{{ 'Save' | localize }}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

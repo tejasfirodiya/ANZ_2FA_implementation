@@ -1,0 +1,221 @@
+<div class="login-form" [@routerTransition]>
+    <div class="pb-13 pt-lg-0 pt-5">
+        <h3 class="fw-bolder text-dark fs-h4 fs-h1-lg">
+            {{ 'TenantSignUp' | localize }}
+        </h3>
+    </div>
+    <div class="row" *ngIf="model.edition">
+        <div class="col-sm-12 col-md-8">
+            <span class="d-block text-muted pt-2 fs-sm">{{ 'Edition' | localize }}</span>
+            <h3 class="pb-10">
+                {{ model.edition.displayName }}
+            </h3>
+        </div>
+        <div class="col-sm-12 col-md-4 text-end">
+            <button
+                [disabled]="saving"
+                routerLink="/account/login"
+                type="button"
+                class="btn btn-light-primary btn-elevate fw-bolder"
+            >
+                {{ 'Back' | localize }}
+            </button>
+        </div>
+    </div>
+
+    <div class="separator separator-border-dashed"></div>
+
+    <form #registerForm="ngForm" role="form" novalidate (submit)="save()" class="login-form form mt-2">
+        <h5 class="mt-2">
+            {{ 'TenantInformations' | localize }}
+        </h5>
+
+        <div class="mb-5">
+            <input
+                #tenancyName="ngModel"
+                class="form-control form-control-solid h-auto py-7 px-6 rounded-lg fs-h6"
+                autoFocus
+                type="text"
+                placeholder="{{ 'TenancyName' | localize }} *"
+                [(ngModel)]="model.tenancyName"
+                name="tenancyName"
+                required
+                maxlength="64"
+                pattern="^[a-zA-Z][a-zA-Z0-9_-]{1,}$"
+            />
+            <div *ngIf="!tenancyName.valid && !tenancyName.pristine">
+                <span class="form-text text-danger text-left">{{ 'TenantName_Regex_Description' | localize }}</span>
+            </div>
+        </div>
+
+        <div class="mb-5">
+            <input
+                #nameInput="ngModel"
+                class="form-control form-control-solid h-auto py-7 px-6 rounded-lg fs-h6"
+                type="text"
+                placeholder="{{ 'TenantName' | localize }} *"
+                [(ngModel)]="model.name"
+                name="Name"
+                required
+                maxlength="128"
+            />
+            <validation-messages [formCtrl]="nameInput"></validation-messages>
+        </div>
+
+        <h5 class="mt-2">
+            {{ 'AccountSettings' | localize }}
+        </h5>
+
+        <div class="mb-5">
+            <input
+                id="AdminName"
+                #adminNameInput="ngModel"
+                type="text"
+                placeholder="{{ 'AdminName' | localize }} *"
+                name="AdminName"
+                class="form-control form-control-solid h-auto py-7 px-6 rounded-lg fs-h6"
+                [(ngModel)]="model.adminName"
+                [ngClass]="{ edited: model.adminName }"
+                required
+                maxlength="64"
+            />
+            <validation-messages [formCtrl]="adminNameInput"></validation-messages>
+        </div>
+
+        <div class="mb-5">          
+            <input
+                id="AdminSurname"
+                #adminSurnameInput="ngModel"
+                type="text"
+                placeholder="{{ 'AdminSurname' | localize }} *"
+                name="AdminSurname"
+                class="form-control form-control-solid h-auto py-7 px-6 rounded-lg fs-h6"
+                [(ngModel)]="model.adminSurname"
+                [ngClass]="{ edited: model.adminSurname }"
+                required
+                maxlength="64"
+            />
+            <span class="form-text text-danger">
+                <validation-messages [formCtrl]="adminSurnameInput"></validation-messages>
+            </span>
+        </div>
+
+        <div class="mb-5">
+            <input
+                #adminEmailAddressInput="ngModel"
+                class="form-control form-control-solid h-auto py-7 px-6 rounded-lg fs-h6"
+                type="email"
+                placeholder="{{ 'AdminEmailAddress' | localize }} *"
+                [(ngModel)]="model.adminEmailAddress"
+                name="adminEmailAddress"
+                required
+                maxlength="256"
+                email
+            />
+            <span class="form-text text-danger">
+                <validation-messages [formCtrl]="adminEmailAddressInput"></validation-messages>
+            </span>
+        </div>
+
+        <div class="mb-5">
+            <input
+                type="password"
+                name="Password"
+                class="form-control form-control-solid h-auto py-7 px-6 rounded-lg fs-h6"
+                [(ngModel)]="model.adminPassword"
+                #Password="ngModel"
+                placeholder="{{ 'AdminPassword' | localize }}"
+                validateEqual="PasswordRepeat"
+                reverse="true"
+                [requireDigit]="passwordComplexitySetting.requireDigit"
+                [requireLowercase]="passwordComplexitySetting.requireLowercase"
+                [requireUppercase]="passwordComplexitySetting.requireUppercase"
+                [requireNonAlphanumeric]="passwordComplexitySetting.requireNonAlphanumeric"
+                [requiredLength]="passwordComplexitySetting.requiredLength"
+                required
+                pPassword
+                [promptLabel]="l('PleaseEnterYourNewPassword')"
+                [weakLabel]="l('weak')"
+                [mediumLabel]="l('medium')"
+                [strongLabel]="l('strong')"
+            />
+            <div [hidden]="registerForm.form.valid || registerForm.form.pristine" class="mb-5">
+                <ul class="form-text text-danger" *ngIf="Password.errors">
+                    <li [hidden]="!Password.errors.requireDigit">
+                        {{ 'PasswordComplexity_RequireDigit_Hint' | localize }}
+                    </li>
+                    <li [hidden]="!Password.errors.requireLowercase">
+                        {{ 'PasswordComplexity_RequireLowercase_Hint' | localize }}
+                    </li>
+                    <li [hidden]="!Password.errors.requireUppercase">
+                        {{ 'PasswordComplexity_RequireUppercase_Hint' | localize }}
+                    </li>
+                    <li [hidden]="!Password.errors.requireNonAlphanumeric">
+                        {{ 'PasswordComplexity_RequireNonAlphanumeric_Hint' | localize }}
+                    </li>
+                    <li [hidden]="!Password.errors.requiredLength">
+                        {{
+                            'PasswordComplexity_RequiredLength_Hint'
+                                | localize: passwordComplexitySetting.requiredLength
+                        }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mb-5">
+            <input
+                type="password"
+                name="PasswordRepeat"
+                class="form-control form-control-solid h-auto py-7 px-6 rounded-lg fs-h6"
+                [ngModel]="model.passwordRepeat"
+                #PasswordRepeat="ngModel"
+                placeholder="{{ 'PasswordRepeat' | localize }}"
+                validateEqual="Password"
+                reverse="false"
+                [requireDigit]="passwordComplexitySetting.requireDigit"
+                [requireLowercase]="passwordComplexitySetting.requireLowercase"
+                [requireUppercase]="passwordComplexitySetting.requireUppercase"
+                [requireNonAlphanumeric]="passwordComplexitySetting.requireNonAlphanumeric"
+                [requiredLength]="passwordComplexitySetting.requiredLength"
+                required
+            />
+            <div [hidden]="registerForm.form.valid || registerForm.form.pristine" class="mb-5">
+                <ul class="form-text text-danger" *ngIf="PasswordRepeat.errors">
+                    <li [hidden]="!PasswordRepeat.errors.requireDigit">
+                        {{ 'PasswordComplexity_RequireDigit_Hint' | localize }}
+                    </li>
+                    <li [hidden]="!PasswordRepeat.errors.requireLowercase">
+                        {{ 'PasswordComplexity_RequireLowercase_Hint' | localize }}
+                    </li>
+                    <li [hidden]="!PasswordRepeat.errors.requireUppercase">
+                        {{ 'PasswordComplexity_RequireUppercase_Hint' | localize }}
+                    </li>
+                    <li [hidden]="!PasswordRepeat.errors.requireNonAlphanumeric">
+                        {{ 'PasswordComplexity_RequireNonAlphanumeric_Hint' | localize }}
+                    </li>
+                    <li [hidden]="!PasswordRepeat.errors.requiredLength">
+                        {{
+                            'PasswordComplexity_RequiredLength_Hint'
+                                | localize: passwordComplexitySetting.requiredLength
+                        }}
+                    </li>
+                    <li [hidden]="PasswordRepeat.valid">{{ 'PasswordsDontMatch' | localize }}</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="pb-lg-0 pb-5">
+            <button
+                type="submit"
+                class="btn w-100 btn-primary fw-bolder fs-h6 px-8 py-4 mb-5"
+                [disabled]="!registerForm.form.valid"
+                [buttonBusy]="saving"
+                [busyText]="l('SavingWithThreeDot')"
+            >
+                <i class="fa fa-check"></i>
+                {{ 'Submit' | localize }}
+            </button>
+        </div>
+    </form>
+</div>

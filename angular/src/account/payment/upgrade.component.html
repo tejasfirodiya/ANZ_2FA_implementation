@@ -1,0 +1,46 @@
+<div class="login-form" [@routerTransition] *ngIf="showPaymentForm">
+    <div class="pb-13 pt-lg-0 pt-5">
+        <h3 class="fw-bolder text-dark fs-h4 fs-h1-lg">
+            {{ 'PaymentInfo' | localize }}
+        </h3>
+    </div>
+    <form class="login-form form" method="post">
+        <h4 class="mb-2">
+            {{ 'Upgrade_Edition_Description' | localize: edition.displayName }}
+        </h4>
+
+        <div class="separator separator-border-dashed"></div>
+
+        <div *ngIf="hasRecurringSubscription()">
+            <div class="mb-5 row">
+                <label class="col-sm-12">
+                    {{ 'RecurringSubscriptionUpgradeNote' | localize }}
+                </label>
+            </div>
+        </div>
+
+        <div *ngIf="!hasRecurringSubscription()">
+            <div class="mb-5 row">
+                <label class="col-sm-8">
+                    {{ 'Total' | localize }}
+                </label>
+
+                <div class="col-sm-4 text-end">
+                    <p class="fw-bolder" id="totalPrice">
+                        {{ appSession.application.currencySign }}{{ additionalPrice | number: '1.2-2' }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="pb-lg-0 pb-5">
+            <button
+                *ngFor="let paymentGateway of paymentGateways"
+                (click)="checkout(paymentGateway.gatewayType)"
+                class="btn btn-success w-100"
+            >
+                {{ 'CheckoutWith' + getPaymentGatewayType(paymentGateway.gatewayType) | localize }}
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,104 @@
+<!--begin::Signin-->
+<div class="login-form" [@routerTransition]>
+    <div class="pb-13 pt-lg-0 pt-5">
+        <h3 class="fw-bolder text-dark fs-h4 fs-h1-lg">{{ 'LogIn' | localize }}</h3>
+    </div>
+    <!--begin::Form-->
+    <form #loginForm="ngForm" class="login-form form" method="post"  (ngSubmit)="login()">
+        <div class="mb-5">
+            <input
+                #userNameOrEmailAddressInput="ngModel"
+                [(ngModel)]="loginService.authenticateModel.userNameOrEmailAddress"
+                autoFocus
+                class="form-control form-control-solid h-auto py-7 px-6 rounded-lg fs-h6"
+                type="text"
+                autocomplete="new-password"
+                placeholder="{{ 'UserNameOrEmail' | localize }} *"
+                name="userNameOrEmailAddress"
+                required
+            />
+            <validation-messages [formCtrl]="userNameOrEmailAddressInput" *ngIf="!userNameOrEmailAddressInput.touched"></validation-messages>
+        </div>
+
+        <div class="mb-5">
+            <input
+                #passwordInput="ngModel"
+                [(ngModel)]="loginService.authenticateModel.password"
+                class="form-control form-control-solid h-auto py-7 px-6 rounded-lg fs-h6"
+                type="password"
+                autocomplete="new-password"
+                placeholder="{{ 'Password' | localize }} *"
+                name="password"
+                required
+                maxlength="32"
+            />
+            <validation-messages [formCtrl]="passwordInput" *ngIf="!passwordInput.touched"></validation-messages>
+        </div>
+
+        <div class="mb-5 d-flex justify-content-between mt-4">
+            <label class="form-check form-check-custom form-check-solid">
+                <input type="checkbox" name="rememberMe" class="form-check-input" value="true" [(ngModel)]="loginService.rememberMe">
+                <span class="form-check-label">
+                    {{ 'RememberMe' | localize }}
+                </span>
+            </label>
+            <a routerLink="/account/forgot-password"
+               id="forget-password" class="text-primary fs-h6 fw-bolder text-hover-primary">{{ 'ForgotPassword' | localize }}</a>
+        </div>
+
+        <!--begin::Action-->
+        <div class="pb-lg-0 pb-5">
+            <button type="submit"
+                    [disabled]="!loginForm.form.valid"
+                    class="btn w-100 btn-primary fw-bolder fs-h6 px-8 py-4 my-3 me-3">{{ 'LogIn' | localize }}</button>
+        </div>
+
+
+        <!--end::Action-->
+    </form>
+
+    <!--end::Form-->
+
+    <!--begin::Options-->
+    <div
+        class="mt-10 mb-2"
+        *ngIf="(multiTenancySideIsTeanant || !isMultiTenancyEnabled) && loginService.externalLoginProviders.length > 0"
+    >
+        <div class="divider">
+            <span>{{ 'LoginWith' | localize }}</span>
+        </div>
+    </div>
+
+    <div
+        class="pb-lg-0 pb-5 login__options"
+        *ngIf="(multiTenancySideIsTeanant || !isMultiTenancyEnabled) && loginService.externalLoginProviders.length > 0"
+    >
+        <a
+            *ngFor="let provider of loginService.externalLoginProviders"
+            class="btn btn-sm btn-light-primary fw-bolder py-2 mb-2 ml-0 me-2"
+            (click)="externalLogin(provider)"
+            title="{{ provider.name }}"
+        >
+            <i class="fab fa-{{ provider.icon }}"></i>
+            {{ provider.name }}
+        </a>
+    </div>
+    <!--end::Options-->
+</div>
+
+<div class="mt-5">
+    <div>
+        <span>{{ 'NotAMemberYet' | localize }}</span>
+    </div>
+    <span *ngIf="isSelfRegistrationAllowed">
+        <a routerLink="/account/register">{{ 'CreateAnAccount' | localize }}</a>
+        <span class="pipe-divider"> | </span>
+   </span>
+
+    <span *ngIf="!multiTenancySideIsTeanant && isTenantSelfRegistrationAllowed">
+        <a routerLink="/account/select-edition">{{ 'NewTenant' | localize }}</a>
+        <span class="pipe-divider"> | </span>
+    </span>
+
+    <a routerLink="/account/email-activation" id="email-activation-btn">{{ 'EmailActivation' | localize }}</a>
+</div>

@@ -1,0 +1,39 @@
+<a href="/">
+    <img
+        *ngIf="!appSession.tenant || !appSession.tenant.HasLogo()"
+        [src]="defaultLogo"
+        alt="logo"
+        class="d-none d-lg-inline h-30px"
+    />
+    <img
+        *ngIf="!appSession.tenant || !appSession.tenant.HasLogo()"
+        [src]="defaultLogo"
+        alt="logo"
+        class="d-lg-none h-25px"
+    />
+    
+    <img
+        *ngIf="appSession.tenant && appSession.tenant.HasLogo()"
+        [src]="
+            remoteServiceBaseUrl +
+            '/TenantCustomization/GetTenantLogo?skin=' +
+            skin +
+            '&tenantId=' +
+            appSession.tenant.id
+        "
+        alt="logo"
+        class="d-none d-lg-inline h-30px"
+    />
+    <img
+        *ngIf="appSession.tenant && appSession.tenant.HasLogo()"
+        [src]="
+            remoteServiceBaseUrl +
+            '/TenantCustomization/GetTenantLogo?skin=' +
+            skin +
+            '&tenantId=' +
+            appSession.tenant.id
+        "
+        alt="logo"
+        class="d-lg-none h-25px"
+    />
+</a>

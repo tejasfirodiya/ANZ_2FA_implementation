@@ -1,0 +1,15 @@
+<div [class]="footerStyle" id="kt_footer">
+    <div [class]="containerClass + ' d-flex flex-column flex-md-row align-items-center justify-content-between'">
+        <div class="text-dark order-2 order-md-1">
+            <span class="text-muted fw-bold me-1">MyTrainingV1231AngularDemo
+                <span *ngIf="appSession.tenant && appSession.tenant.edition && appSession.tenant.edition.displayName">
+                    {{ appSession.tenant.edition.displayName }}
+                </span>
+                | API: v{{ appSession.application.version }} | Client: v{{ webAppGuiVersion }} [{{ releaseDate }}]
+            </span>
+        </div>
+        <ul class="menu menu-gray-600 menu-hover-primary fw-bold order-1">
+            
+        </ul>
+    </div>
+</div>

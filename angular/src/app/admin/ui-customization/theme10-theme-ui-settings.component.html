@@ -1,0 +1,73 @@
+<tabset *ngIf="settings">
+    <tab heading="{{ 'UiCustomization_Layout' | localize }}" class="p-5">
+        <div class="form">
+            <form>
+                <div class="mb-5 row">
+                    <div class="col-lg-12">
+                        <label class="form-check form-check-custom form-check-solid col-lg-12">
+                            <input
+                                type="checkbox"
+                                name="DarkMode"
+                                class="form-check-input"
+                                [(ngModel)]="settings.layout.darkMode"
+                            />
+                            <span class="form-check-label">
+                                {{ 'UiCustomization_DarkMode' | localize }}
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </tab>
+
+    <tab heading="{{ 'UiCustomization_Menu' | localize }}" class="p-5">
+        <div class="form">
+            <form>
+                <div class="mb-5 row">
+                    <div class="col-lg-12">
+                        <label class="form-check form-check-custom form-check-solid col-lg-12">
+                            <input
+                                type="checkbox"
+                                name="DefaultMinimizedAside"
+                                class="form-check-input"
+                                [(ngModel)]="settings.menu.searchActive"
+                            />
+                            <span class="form-check-label">
+                                {{ 'ShowMenuSearchInput' | localize }}
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </tab>
+</tabset>
+
+<div class="mt-4">
+    <button
+        *ngIf="'Pages.Administration.UiCustomization' | permission"
+        (click)="updateDefaultUiManagementSettings()"
+        class="btn btn-primary"
+    >
+        <i class="fa fa-save"></i>
+        {{ 'SaveAsSystemDefault' | localize }}
+    </button>
+
+    <button
+        *ngIf="!('Pages.Administration.UiCustomization' | permission)"
+        (click)="updateUiManagementSettings()"
+        class="btn btn-primary"
+    >
+        <i class="fa fa-save"></i>
+        {{ 'Save' | localize }}
+    </button>
+
+    <button
+        *ngIf="!('Pages.Administration.UiCustomization' | permission)"
+        (click)="useSystemDefaultSettings()"
+        class="btn btn btn-secondary btn-hover-brand"
+    >
+        {{ 'UseSystemDefaults' | localize }}
+    </button>
+</div>

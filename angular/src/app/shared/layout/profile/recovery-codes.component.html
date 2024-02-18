@@ -1,0 +1,8 @@
+<h3 class="card-label">
+    {{ 'SaveRecoveryCodesTitle' | localize }}
+</h3>
+<div id="recoveryCodes" class="bg-light p-5">
+    <div class="row">
+        <div *ngFor="let code of this.model.recoveryCodes" class="text-dark fs-6 fw-bold col-6">{{ code }}</div>
+    </div>
+</div>

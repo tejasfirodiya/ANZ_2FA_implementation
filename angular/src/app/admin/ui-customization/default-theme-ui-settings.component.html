@@ -1,0 +1,191 @@
+<tabset *ngIf="settings">
+    <tab heading="{{ 'UiCustomization_Layout' | localize }}" class="p-5">
+        <div class="form">
+            <form>
+                <div class="mb-5 row">
+                    <div class="col-lg-12">
+                        <label class="form-check form-check-custom form-check-solid col-lg-12">
+                            <input
+                                type="checkbox"
+                                name="DarkMode"
+                                class="form-check-input"
+                                [(ngModel)]="settings.layout.darkMode"
+                            />
+                            <span class="form-check-label">
+                                {{ 'UiCustomization_DarkMode' | localize }}
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </tab>
+
+    <tab heading="{{ 'UiCustomization_Menu' | localize }}" class="p-5">
+        <div class="form">
+            <form>
+                <div class="mb-5 row">
+                    <h5 class="col">{{ 'UiCustomization_MenuSkin' | localize }}</h5>
+                    <div class="col-lg-12">
+                        <select
+                            id="AsideSkin"
+                            name="AsideSkin"
+                            class="form-select w-25"
+                            [(ngModel)]="settings.menu.asideSkin"
+                        >
+                            <option value="light">{{ 'UiCustomization_Light' | localize }}</option>
+                            <option value="dark">{{ 'UiCustomization_Dark' | localize }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-5 row">
+                    <div class="col-lg-12">
+                        <label class="form-check form-check-custom form-check-solid col-lg-12">
+                            <input
+                                type="checkbox"
+                                name="FixedAside"
+                                class="form-check-input"
+                                [(ngModel)]="settings.menu.fixedAside"
+                            />
+                            <span class="form-check-label">
+                                {{ 'UiCustomization_FixedMenu' | localize }}
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-5 row">
+                    <div class="col-lg-12">
+                        <label class="form-check form-check-custom form-check-solid col-lg-12">
+                            <input
+                                type="checkbox"
+                                name="AllowAsideMinimizing"
+                                class="form-check-input"
+                                [(ngModel)]="settings.menu.allowAsideMinimizing"
+                                (ngModelChange)="allowAsideMinimizingChange($event)"
+                            />
+                            <span class="form-check-label">
+                                {{ 'UiCustomization_AllowAsideMinimizing' | localize }}
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-5 row">
+                    <div class="col-lg-12">
+                        <label class="form-check form-check-custom form-check-solid col-lg-12">
+                            <input
+                                type="checkbox"
+                                name="DefaultMinimizedAside"
+                                class="form-check-input"
+                                [(ngModel)]="settings.menu.defaultMinimizedAside"
+                                [(disabled)]="!settings.menu.allowAsideMinimizing"
+                            />
+                            <span class="form-check-label">
+                                {{ 'UiCustomization_DefaultMinimizedAside' | localize }}
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-5 row">
+                    <div class="col-lg-12">
+                        <label class="form-check form-check-custom form-check-solid col-lg-12">
+                            <input
+                                type="checkbox"
+                                name="HoverableAside"
+                                class="form-check-input"
+                                [(ngModel)]="settings.menu.hoverableAside"
+                            />
+                            <span class="form-check-label">
+                                {{ 'UiCustomization_HoverableAside' | localize }}
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-5 row">
+                    <div class="col-lg-12">
+                        <label class="form-check form-check-custom form-check-solid col-lg-12">
+                            <input
+                                type="checkbox"
+                                name="SearchActive"
+                                class="form-check-input"
+                                [(ngModel)]="settings.menu.searchActive"
+                            />
+                            <span class="form-check-label">
+                                {{ 'ShowMenuSearchInput' | localize }}
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </tab>
+
+    <tab heading="{{ 'UiCustomization_Toolbar' | localize }}" class="p-5">
+        <div class="form">
+            <form>
+                <div class="mb-5 row">
+                    <div class="col-lg-12">
+                        <label class="form-check form-check-custom form-check-solid col-lg-12">
+                            <input
+                                type="checkbox"
+                                name="DesktopFixedHeader"
+                                class="form-check-input"
+                                [(ngModel)]="settings.toolbar.desktopFixedToolbar"
+                            />
+                            <span class="form-check-label">
+                                {{ 'UiCustomization_Toolbar_DesktopFixedHeader' | localize }}
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-5 row">
+                    <div class="col-lg-12">
+                        <label class="form-check form-check-custom form-check-solid col-lg-12">
+                            <input
+                                type="checkbox"
+                                name="MobileFixedHeader"
+                                class="form-check-input"
+                                [(ngModel)]="settings.toolbar.mobileFixedToolbar"
+                            />
+                            <span class="form-check-label">
+                                {{ 'UiCustomization_Toolbar_MobileFixedHeader' | localize }}
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </tab>
+</tabset>
+
+<div class="mt-4">
+    <button
+        *ngIf="'Pages.Administration.UiCustomization' | permission"
+        (click)="updateDefaultUiManagementSettings()"
+        class="btn btn-primary"
+    >
+        <i class="fa fa-save"></i>
+        {{ 'SaveAsSystemDefault' | localize }}
+    </button>
+
+    <button
+        *ngIf="!('Pages.Administration.UiCustomization' | permission)"
+        (click)="updateUiManagementSettings()"
+        class="btn btn-primary"
+    >
+        <i class="fa fa-save"></i>
+        {{ 'Save' | localize }}
+    </button>
+
+    <button
+        *ngIf="!('Pages.Administration.UiCustomization' | permission)"
+        (click)="useSystemDefaultSettings()"
+        class="btn btn-secondary"
+    >
+        {{ 'UseSystemDefaults' | localize }}
+    </button>
+</div>

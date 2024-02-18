@@ -1,0 +1,35 @@
+
+body:not(.dark-mode):not(.account) {
+  background-image: url(/assets/metronic/themes/theme12/images/bg/page-bg.jpg);
+}
+
+.aside-enabled .wrapper{
+  padding-right: 0px !important;
+}
+
+.menu-item .menu-link .menu-title{
+  flex-grow: inherit;
+}
+
+#kt_quick_user_toggle{
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.aside-enabled.header-fixed[data-kt-sticky-header=on] .header{
+  right: 0px;
+}
+
+body[data-kt-sticky-header="on"] .header-container{
+  padding-left: 30px !important;
+}
+
+@media (max-width: 991.98px) {
+    #kt_quick_user_toggle {
+      padding-top: 8px;
+    }
+
+    #kt_header{
+      z-index: 99;
+  }
+}

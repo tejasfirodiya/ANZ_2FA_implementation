@@ -1,0 +1,123 @@
+<div [@routerTransition] class="d-flex flex-column flex-root">
+    <!--begin::Page-->
+    <div class="page d-flex flex-column flex-column-fluid">
+        <!--begin::Header-->
+        <div id="kt_header" class="header align-items-stretch">
+            <!--begin::Container-->
+            <div [class]="containerClass + ' d-flex align-items-stretch justify-content-between'">
+                <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0 w-lg-225px me-5">
+                    <div
+                        class="btn btn-icon btn-active-icon-primary ms-n2 me-2 d-flex d-lg-none"
+                        id="kt_aside_mobile_toggle"
+                    >
+                        <!--begin::Svg Icon | path: icons/duotune/abstract/abs015.svg-->
+                        <span class="svg-icon svg-icon-1">
+                            <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M21 7H3C2.4 7 2 6.6 2 6V4C2 3.4 2.4 3 3 3H21C21.6 3 22 3.4 22 4V6C22 6.6 21.6 7 21 7Z"
+                                    fill="currentColor"
+                                ></path>
+                                <path
+                                    opacity="0.3"
+                                    d="M21 14H3C2.4 14 2 13.6 2 13V11C2 10.4 2.4 10 3 10H21C21.6 10 22 10.4 22 11V13C22 13.6 21.6 14 21 14ZM22 20V18C22 17.4 21.6 17 21 17H3C2.4 17 2 17.4 2 18V20C2 20.6 2.4 21 3 21H21C21.6 21 22 20.6 22 20Z"
+                                    fill="currentColor"
+                                ></path>
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                    </div>
+                    <theme5-brand></theme5-brand>
+                </div>
+                <div class="topbar d-flex align-items-stretch flex-shrink-0">
+                    <active-delegated-users-combo
+                        [customStyle]="'btn btn-sm btn-clean btn-text-dark-75 me-1'"
+                    ></active-delegated-users-combo>
+                    <subscription-notification-bar
+                        [customStyle]="
+                            'btn btn-icon btn-active-light btn-active-color-primary w-30px h-30px w-md-40px h-md-40px position-relative'
+                        "
+                    ></subscription-notification-bar>
+                    <quick-theme-selection
+                        [customStyle]="
+                            'btn btn-icon btn-active-light btn-active-color-primary w-30px h-30px w-md-40px h-md-40px position-relative'
+                        "
+                    ></quick-theme-selection>
+                    <language-switch-dropdown
+                        [customStyle]="
+                            'btn btn-icon btn-active-light btn-active-color-primary w-30px h-30px w-md-40px h-md-40px position-relative'
+                        "
+                    ></language-switch-dropdown>
+                    <header-notifications
+                        [customStyle]="
+                            'btn btn-icon btn-active-light btn-active-color-primary w-30px h-30px w-md-40px h-md-40px position-relative'
+                        "
+                    ></header-notifications>
+                    <chat-toggle-button
+                        [customStyle]="
+                            'btn btn-icon btn-active-light btn-active-color-primary w-30px h-30px w-md-40px h-md-40px position-relative'
+                        "
+                    ></chat-toggle-button>
+
+                    <toggle-dark-mode
+                        [customStyle]="
+                            'btn btn-icon btn-active-light btn-active-color-primary w-30px h-30px w-md-40px h-md-40px position-relative'
+                        "
+                        [isDarkModeActive]="isDarkModeActive()"
+                    ></toggle-dark-mode>
+
+                    <user-menu
+                        [togglerCssClass]="
+                            'btn btn-active-light d-flex align-items-center bg-hover-light py-2 px-2 px-md-3 symbol symbol-30px symbol-md-40px'
+                        "
+                    ></user-menu>
+                </div>
+            </div>
+            <!--end::Container-->
+        </div>
+        <!--end::Header-->
+        <!--begin::Container-->
+        <div id="kt_content_container" [class]="containerClass + ' d-flex flex-column-fluid align-items-stretch'">
+            <!--begin::Aside-->
+            <div
+                id="kt_aside"
+                [class]="getAsideClass()"
+                data-kt-drawer="true"
+                data-kt-drawer-name="aside"
+                data-kt-drawer-activate="{default: true, lg: false}"
+                data-kt-drawer-overlay="true"
+                data-kt-drawer-width="{default:'200px', '300px': '250px'}"
+                data-kt-drawer-direction="start"
+                data-kt-drawer-toggle="#kt_aside_mobile_toggle"
+            >
+                <div class="hover-scroll-overlay-y my-5 my-lg-5 w-100 ps-4 ps-lg-0 pe-4 me-1">
+                    <side-bar-menu
+                        [menuClass]="
+                            'menu menu-column menu-active-bg menu-hover-bg menu-title-gray-700 fs-6 menu-rounded w-100'
+                        "
+                    ></side-bar-menu>
+                </div>
+            </div>
+            <!--end::Aside-->
+            <!--begin::Wrapper-->
+            <div class="wrapper d-flex flex-column flex-row-fluid mt-5 mt-lg-10" id="kt_wrapper">
+                <!--begin::Content-->
+                <div class="content flex-column-fluid" id="kt_content">
+                    <router-outlet></router-outlet>
+                </div>
+                <!--end::Content-->
+                <!--begin::Footer-->
+                <footer-bar></footer-bar>
+                <!--end::Footer-->
+            </div>
+            <!--end::Wrapper-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Page-->
+</div>

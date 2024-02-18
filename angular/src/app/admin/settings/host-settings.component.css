@@ -1,0 +1,3 @@
+:host ::ng-deep #externalLoginSettings .tab-content{
+    width: 100% !important;
+}

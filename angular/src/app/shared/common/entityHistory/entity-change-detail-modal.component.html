@@ -1,0 +1,72 @@
+<div
+    appBsModal
+    #entityChangeDetailModal="bs-modal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="entityChangeDetailModal"
+    aria-hidden="true"
+    [config]="{ backdrop: 'static' }"
+>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div *ngIf="entityChange" class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{ 'Detail' | localize }} - {{ entityChange.entityTypeFullName | localize }}</span>
+                    <br />
+                    <small [innerHTML]="l('CreatedAtByUser', entityChange.changeTime, entityChange.userName)"></small>
+                </h4>
+                <button type="button" class="btn-close" (click)="close()" [attr.aria-label]="l('Close')">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card card-custom gutter-b" *ngFor="let propertyChange of entityPropertyChanges">
+                    <!--begin::Header-->
+                    <div class="card-header py-5">
+                        <h3 class="card-title">
+                            <span class="card-label">{{ propertyChange.propertyName }}</span>
+                        </h3>
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body py-0">
+                        <!--begin::Table-->
+                        <div class="row m-0">
+                            <div class="col px-8 py-6 me-8">
+                                <div class="fs-sm text-muted fw-bold">
+                                    {{ 'OriginalValue' | localize }}
+                                </div>
+                                <div class="fw-bolder">
+                                    {{
+                                        getPropertyChangeValue(
+                                            propertyChange.originalValue,
+                                            propertyChange.propertyTypeFullName
+                                        )
+                                    }}
+                                </div>
+                            </div>
+                            <div class="col px-8 py-6">
+                                <div class="fs-sm text-muted fw-bold">{{ 'NewValue' | localize }}</div>
+                                <div class="fw-bolder">
+                                    {{
+                                        getPropertyChangeValue(
+                                            propertyChange.newValue,
+                                            propertyChange.propertyTypeFullName
+                                        )
+                                    }}
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Table-->
+                    </div>
+                    <!--end::Body-->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary fw-bold" (click)="close()">
+                    {{ 'Close' | localize }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
